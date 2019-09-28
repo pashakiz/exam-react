@@ -26,13 +26,13 @@ class App extends Component {
 
     let body = '';
     if (this.state.tabOpen === 'tabExam') {
-        body = <div class="exam__content exam__content_exam active">tab Exam</div>;
+        body = <div className="exam__content exam__content_exam active">tab Exam</div>;
     }
     if (this.state.tabOpen === 'tabNumbers') {
-        body = <div class="exam__content exam__content_numbers active">tab Numbers</div>;
+        body = <div className="exam__content exam__content_numbers active">tab Numbers</div>;
     }
     if (this.state.tabOpen === 'tabTopics') {
-        body = <div class="exam__content exam__content_topics active">tab Topics</div>;
+        body = <div className="exam__content exam__content_topics active">tab Topics</div>;
     }
 
     return (
