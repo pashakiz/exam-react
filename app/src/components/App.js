@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import questions from '../questions';
 import classNames from 'classnames';
 import TabContent from './TabContent'
 
@@ -11,30 +10,29 @@ class App extends Component {
     };
 
     render() {
-    console.log('---', 'DB: ', questions[1]);
-    const TabExamClasses = classNames(
-        'btn btn_tab exam__tab exam__tab_exam',
-        { active: (this.state.tabOpen === 'tabExam') }
-    );
-    const TabNumbersClasses = classNames(
-        'btn btn_tab exam__tab exam__tab_numbers',
-        { active: (this.state.tabOpen === 'tabNumbers') }
-    );
-    const TabTopicsClasses = classNames(
-        'btn btn_tab exam__tab exam__tab_topics',
-        { active: (this.state.tabOpen === 'tabTopics') }
-    );
+        const TabExamClasses = classNames(
+            'btn btn_tab exam__tab exam__tab_exam',
+            { active: (this.state.tabOpen === 'tabExam') }
+        );
+        const TabNumbersClasses = classNames(
+            'btn btn_tab exam__tab exam__tab_numbers',
+            { active: (this.state.tabOpen === 'tabNumbers') }
+        );
+        const TabTopicsClasses = classNames(
+            'btn btn_tab exam__tab exam__tab_topics',
+            { active: (this.state.tabOpen === 'tabTopics') }
+        );
 
-    return (
-        <div className="exam">
-            <div className="exam__tabs">
-                <div className={TabExamClasses} onClick={this.handleTabExam}>Экзамен</div>
-                <div className={TabNumbersClasses} onClick={this.handleTabNumbers}>Билеты по номерам</div>
-                <div className={TabTopicsClasses} onClick={this.handleTabTopics}>Билеты по темам</div>
+        return (
+            <div className="exam">
+                <div className="exam__tabs">
+                    <div className={TabExamClasses} onClick={this.handleTabExam}>Экзамен</div>
+                    <div className={TabNumbersClasses} onClick={this.handleTabNumbers}>Билеты по номерам</div>
+                    <div className={TabTopicsClasses} onClick={this.handleTabTopics}>Билеты по темам</div>
+                </div>
+                <TabContent tabOpen={this.state.tabOpen}/>
             </div>
-            <TabContent questions={questions} tabOpen={this.state.tabOpen}/>
-        </div>
-    );
+        );
     }
 
     handleTabExam = () => this.setState({
