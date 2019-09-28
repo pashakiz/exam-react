@@ -114,7 +114,7 @@ class TabContent extends Component {
                 </div>
             );
         }
-        if (tabOpen === 'tabTopics') { //dd
+        if (tabOpen === 'tabTopics') {
             body = (
                 <div className="exam__content exam__content_topics active">
                     <div className="exam__bytopics">
