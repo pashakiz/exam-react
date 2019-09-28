@@ -8,7 +8,7 @@ export default class Question extends Component {
         const {ticketNum} = this.props;
 
         console.log('question', questions[0].text);
-        console.log('card', cards.c1);
+        console.log('card', cards['c'+ticketNum]);
 
         return(
             <div className="exam-question">
@@ -56,19 +56,19 @@ export default class Question extends Component {
                     <div className="exam-question__answers">
                         <div className="custom-control custom-radio wrong">
                             <input type="radio" id="q0001-a1" className="custom-control-input" name="q0001" value="1"/>
-                            <label className="custom-control-label" for="q0001-a1">Только Б.</label>
+                            <label className="custom-control-label" htmlFor="q0001-a1">Только Б.</label>
                         </div>
                         <div className="custom-control custom-radio correct">
                             <input type="radio" id="q0001-a2" className="custom-control-input" name="q0001" value="2"/>
-                            <label className="custom-control-label" for="q0001-a2">*Только А и Б.</label>
+                            <label className="custom-control-label" htmlFor="q0001-a2">*Только А и Б.</label>
                         </div>
                         <div className="custom-control custom-radio">
                             <input type="radio" id="q0001-a3" className="custom-control-input" name="q0001" value="3"/>
-                            <label className="custom-control-label" for="q0001-a3">В любых.</label>
+                            <label className="custom-control-label" htmlFor="q0001-a3">В любых.</label>
                         </div>
                         <div className="custom-control custom-radio">
                             <input type="radio" id="q0001-a4example" className="custom-control-input" name="q0001" value="0"/>
-                            <label className="custom-control-label" for="q0001-a4example">Лишний ответ для примера.</label>
+                            <label className="custom-control-label" htmlFor="q0001-a4example">Лишний ответ для примера.</label>
                         </div>
                     </div>
                 </div>
