@@ -3,12 +3,39 @@ import questions from '../questions';
 import cards from '../tickets';
 
 export default class Question extends Component {
+
+    state = {
+        question: 'clean', //'clean', 'true', 'false'
+        isHelp: true
+    };
+
     render() {
 
         const {ticketNum} = this.props;
+        const noImage = 'img/noimage.png';
 
         console.log('question', questions[0].text);
-        console.log('card', cards['c'+ticketNum]);
+        console.log('card', cards['c'+ticketNum][0]);
+
+        let helpBtn = '';
+        let helpHtml = '';
+        let helpHtmlRes = '';
+        if (this.state.question == 'true') {helpHtmlRes = 'Правильно'}
+        if (this.state.question == 'false') {helpHtmlRes = 'Ошибка'}
+        let helpHtmlRow = this.state.question !== 'clean' ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
+        if (this.state.isHelp && questions[cards['c'+ticketNum][0]].help) {
+            helpBtn = (
+                <button className="exam-prompt-btn">Подсказка</button>
+            );
+            helpHtml = (
+                <div className="exam-prompt">
+                    <div className="exam-prompt__info">
+                        {helpHtmlRow}
+                        <div className="exam-prompt__text">{questions[cards['c'+ticketNum][0]].help}</div>
+                    </div>
+                </div>
+            );
+        }
 
         return(
             <div className="exam-question">
@@ -50,9 +77,9 @@ export default class Question extends Component {
                         </div>
                     </div>
                     <div className="exam-question__img">
-                        <img src="img/tickets/01-02.jpg" alt="" />
+                        <img src={questions[cards['c'+ticketNum][0]].img ? questions[cards['c'+ticketNum][0]].img : noImage} alt="" />
                     </div>
-                    <div className="exam-question__text">В каких направлениях вам разрешено продолжить движение?</div>
+                    <div className="exam-question__text">{questions[cards['c'+ticketNum][0]].text}</div>
                     <div className="exam-question__answers">
                         <div className="custom-control custom-radio wrong">
                             <input type="radio" id="q0001-a1" className="custom-control-input" name="q0001" value="1"/>
@@ -78,14 +105,9 @@ export default class Question extends Component {
                             <button className="btn btn2 exam-question__btn exam-question__btn-submit">Ответить</button>
                             <button className="btn btn3 exam-question__btn exam-question__btn-next">Пропустить</button>
                         </div>
-                        <button className="exam-prompt-btn">Подсказка</button>
+                        {helpBtn}
                     </div>
-                    <div className="exam-prompt">
-                        <div className="exam-prompt__info">
-                            <div className="exam-prompt__res">Правильно</div>
-                            <div className="exam-prompt__text">текст подсказки</div>
-                        </div>
-                    </div>
+                    {helpHtml}
                 </div>
             </div>
         )
