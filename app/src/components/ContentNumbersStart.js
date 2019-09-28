@@ -1,12 +1,31 @@
 import React, {Component} from 'react';
+import Question from './Question';
 
 export default class ContentNumbersStart extends Component {
+
+    state = {
+        isStart: this.props,
+        isQuestion: false,
+        isResult: false,
+        ticketNum: 0
+    };
+
     render() {
 
-        const {tabOpen} = this.props;
 
+        const {tabOpen} = this.props;
         let body = '';
-        if (tabOpen === 'tabNumbers') {
+
+        if (this.state.isQuestion && this.state.ticketNum>0) {
+            body = <Question ticketNum={this.state.ticketNum} />;
+        }
+
+        if (this.state.isResult) {
+            body = <div>Result</div>;
+        }
+
+        if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
+            console.log('tabOpen === tabNumbers');
 
             let buttons = [];
             for (let i=1; i<=20; i++) {
@@ -47,7 +66,10 @@ export default class ContentNumbersStart extends Component {
     }
 
     handleClick = (i) => {
-        console.log(i);
+        this.setState({
+            isQuestion: true,
+            ticketNum: i
+        });
     }
 
 }
