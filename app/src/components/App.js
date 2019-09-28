@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import TabContent from './TabContent'
+import TabContent from './TabContent';
 
 class App extends Component {
 
