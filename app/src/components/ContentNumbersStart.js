@@ -10,20 +10,19 @@ export default class ContentNumbersStart extends Component {
 
             let buttons = [];
             for (let i=1; i<=20; i++) {
-                console.log('-',i,'-',i+20,'-',i+40,'-',i+60,'-');
                 buttons.push(
-                    <tr>
+                    <tr key={i}>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" data-ticket={i}>Билет №{i}</button>
+                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i)}>Билет №{i}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" data-ticket={i+20}>Билет №{i+20}</button>
+                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+20)}>Билет №{i+20}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" data-ticket={i+40}>Билет №{i+40}</button>
+                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+40)}>Билет №{i+40}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" data-ticket={i+60}>Билет №{i+60}</button>
+                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+60)}>Билет №{i+60}</button>
                         </td>
                     </tr>
                 );
@@ -46,4 +45,9 @@ export default class ContentNumbersStart extends Component {
             </div>
         )
     }
+
+    handleClick = (i) => {
+        console.log(i);
+    }
+
 }
