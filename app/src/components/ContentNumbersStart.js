@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Question from './Question';
+import cards from '../tickets';
 
 export default class ContentNumbersStart extends Component {
 
@@ -17,7 +18,7 @@ export default class ContentNumbersStart extends Component {
         let body = '';
 
         if (this.state.isQuestion && this.state.ticketNum>0) {
-            body = <Question ticketNum={this.state.ticketNum} />;
+            body = <Question ticketNum={this.state.ticketNum} allQuestions={cards['c'+this.state.ticketNum]} />;
         }
 
         if (this.state.isResult) {
