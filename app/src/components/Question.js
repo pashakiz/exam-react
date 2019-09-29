@@ -13,15 +13,20 @@ export default class Question extends Component {
 
         const {ticketNum} = this.props;
         const noImage = 'img/noimage.png';
+        const questionNum = 0; //пока первый, но нужно сделать текущий вопрос
+        const questionId = cards['c'+ticketNum][questionNum];
+        const thisQuestion = questions[cards['c'+ticketNum][questionId]];
+        const questionCount = thisQuestion.answer.length;
 
-        console.log('question', questions[0].text);
+
         console.log('card', cards['c'+ticketNum][0]);
+        console.log('this question:', thisQuestion.answer[2]);
 
         let helpBtn = '';
         let helpHtml = '';
         let helpHtmlRes = '';
-        if (this.state.question == 'true') {helpHtmlRes = 'Правильно'}
-        if (this.state.question == 'false') {helpHtmlRes = 'Ошибка'}
+        if (this.state.question === 'true') {helpHtmlRes = 'Правильно'}
+        if (this.state.question === 'false') {helpHtmlRes = 'Ошибка'}
         let helpHtmlRow = this.state.question !== 'clean' ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
         if (this.state.isHelp && questions[cards['c'+ticketNum][0]].help) {
             helpBtn = (
@@ -33,6 +38,19 @@ export default class Question extends Component {
                         {helpHtmlRow}
                         <div className="exam-prompt__text">{questions[cards['c'+ticketNum][0]].help}</div>
                     </div>
+                </div>
+            );
+        }
+
+        let answersHtml = [];
+        for (let i = 0; i < questionCount; i++) {
+            //thisQuestion.answer[i]
+            let answerId = 'q'+questionId+'-a'+(i+1);
+            let answerName = 'q'+questionId;
+            answersHtml.push(
+                <div className="custom-control custom-radio" key={answerId}>
+                    <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i+1}/>
+                    <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                 </div>
             );
         }
@@ -81,22 +99,7 @@ export default class Question extends Component {
                     </div>
                     <div className="exam-question__text">{questions[cards['c'+ticketNum][0]].text}</div>
                     <div className="exam-question__answers">
-                        <div className="custom-control custom-radio wrong">
-                            <input type="radio" id="q0001-a1" className="custom-control-input" name="q0001" value="1"/>
-                            <label className="custom-control-label" htmlFor="q0001-a1">Только Б.</label>
-                        </div>
-                        <div className="custom-control custom-radio correct">
-                            <input type="radio" id="q0001-a2" className="custom-control-input" name="q0001" value="2"/>
-                            <label className="custom-control-label" htmlFor="q0001-a2">*Только А и Б.</label>
-                        </div>
-                        <div className="custom-control custom-radio">
-                            <input type="radio" id="q0001-a3" className="custom-control-input" name="q0001" value="3"/>
-                            <label className="custom-control-label" htmlFor="q0001-a3">В любых.</label>
-                        </div>
-                        <div className="custom-control custom-radio">
-                            <input type="radio" id="q0001-a4example" className="custom-control-input" name="q0001" value="0"/>
-                            <label className="custom-control-label" htmlFor="q0001-a4example">Лишний ответ для примера.</label>
-                        </div>
+                        {answersHtml}
                     </div>
                 </div>
                 <div className="exam-question__footer">
