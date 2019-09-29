@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ContentExamStart from './ContentExamStart';
-import ContentNumbersStart from './ContentNumbersStart';
-import ContentTopicsStart from './ContentTropicsStart';
+import ContentExamStart from './ContentExam';
+import ContentNumbersStart from './ContentNumbers';
+import ContentTopicsStart from './ContentTropics';
 //import classNames from 'classnames';
 
 
