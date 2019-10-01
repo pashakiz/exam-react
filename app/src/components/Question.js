@@ -6,25 +6,29 @@ export default class Question extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            question: 'clean', //'clean', 'true', 'false'
+            isQuestionTrue: null, //null, true, false
             ticketNum: this.props.ticketNum,
-            allQuestions: this.props.allQuestions,
+            allQuestions: this.props.allQuestions, //[num][id]
+            checkedQuestions: this.props.checkedQuestions, //[num][true/false]
             questionNum: 0, //default first question of ticket
+            answerBtnDisabled: true,
             isHelp: true
         };
     }
 
     render() {
+        console.log('1this.state.checkedQuestions: ',this.state.checkedQuestions);
         const noImage = 'img/noimage.png';
         const thisQuestionId = this.state.allQuestions[this.state.questionNum];
         const thisQuestion = questions[thisQuestionId];
+        const checkedQuestions = this.state.checkedQuestions;
 
         let helpBtn = '';
         let helpHtml = '';
         let helpHtmlRes = '';
-        if (this.state.question === 'true') {helpHtmlRes = 'Правильно'}
-        if (this.state.question === 'false') {helpHtmlRes = 'Ошибка'}
-        let helpHtmlRow = this.state.question !== 'clean' ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
+        if (checkedQuestions[this.state.questionNum] === true) {helpHtmlRes = 'Правильно'}
+        if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {helpHtmlRes = 'Ошибка'}
+        let helpHtmlRow = checkedQuestions[this.state.questionNum] !== null ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
         if (this.state.isHelp && thisQuestion.help) {
             helpBtn = (
                 <button className="exam-prompt-btn">Подсказка</button>
@@ -45,12 +49,66 @@ export default class Question extends Component {
             let answerName = 'q'+thisQuestionId;
 
             /*add classes to .custom-control.custom-radio: wrong, correct*/
-            answersHtml.push(
-                <div className="custom-control custom-radio" key={answerId}>
-                    <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i+1}/>
-                    <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
-                </div>
-            );
+
+
+            if (checkedQuestions[this.state.questionNum] === null) {
+                //unanswered
+                answersHtml.push(
+                    <div className="custom-control custom-radio" key={answerId}>
+                        <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i}/>
+                        <label className="custom-control-label" htmlFor={answerId} onClick={this.handleClickLabelAnswer}>{thisQuestion.answer[i]}</label>
+                    </div>
+                );
+            } else {
+                //answered
+                if (checkedQuestions[this.state.questionNum] === true) {
+                    //correct
+                    if (i === thisQuestion.answerTrue) {
+                        //highlight correct answer
+                        answersHtml.push(
+                            <div className="custom-control custom-radio correct" key={answerId}>
+                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled" checked="checked"/>
+                                <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
+                            </div>
+                        );
+                    } else {
+                        //other answers not highlighted
+                        answersHtml.push(
+                            <div className="custom-control custom-radio" key={answerId}>
+                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
+                            </div>
+                        );
+                    }
+                } else if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {
+                    //wrong
+                    if (i === checkedQuestions[this.state.questionNum]) {
+                        //highlight wrong answer
+                        answersHtml.push(
+                            <div className="custom-control custom-radio wrong" key={answerId}>
+                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled" checked="checked"/>
+                                <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
+                            </div>
+                        );
+                    } else if (i === thisQuestion.answerTrue) {
+                        //highlight correct answer
+                        answersHtml.push(
+                            <div className="custom-control custom-radio correct" key={answerId}>
+                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
+                            </div>
+                        );
+                    } else {
+                        //other answers not highlighted
+                        answersHtml.push(
+                            <div className="custom-control custom-radio" key={answerId}>
+                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
+                            </div>
+                        );
+                    }
+                }
+            }
         }
 
         let paginationHtml = [];
@@ -58,6 +116,14 @@ export default class Question extends Component {
             if (i === this.state.questionNum+1) {
                 paginationHtml.push(
                     <button className="btn btn__pagination active" key={i}>{i}</button>
+                );
+            } else if (checkedQuestions[i-1] === true) {
+                paginationHtml.push(
+                    <button className="btn btn__pagination correct" key={i}>{i}</button>
+                );
+            } else if(checkedQuestions[i-1] !== true && checkedQuestions[i-1] !== null) {
+                paginationHtml.push(
+                    <button className="btn btn__pagination wrong" key={i}>{i}</button>
                 );
             } else {
                 paginationHtml.push(
@@ -99,8 +165,11 @@ export default class Question extends Component {
                 <div className="exam-question__footer">
                     <div className="d-sm-flex justify-content-between align-items-start">
                         <div className="exam-question__btns">
-                            <button className="btn btn2 exam-question__btn exam-question__btn-submit">Ответить</button>
-                            <button className="btn btn3 exam-question__btn exam-question__btn-next" onClick={this.handleClickOpenQuestion.bind(this, this.state.questionNum+1)}>Пропустить</button>
+                            <button className="btn btn2 exam-question__btn exam-question__btn-submit"
+                                    onClick={this.handleClickAnswerCheck.bind(this, thisQuestionId, thisQuestion.answerTrue)}
+                                    disabled={this.state.answerBtnDisabled}>Ответить</button>
+                            <button className="btn btn3 exam-question__btn exam-question__btn-next"
+                                    onClick={this.handleClickOpenQuestion.bind(this, this.state.questionNum+1)}>Пропустить</button>
                         </div>
                         {helpBtn}
                     </div>
@@ -116,5 +185,41 @@ export default class Question extends Component {
                 questionNum: num
             });
         }
+    }
+
+    handleClickLabelAnswer = () => this.setState({
+        answerBtnDisabled: false
+    });
+
+    handleClickAnswerCheck = (thisQuestionId, answerTrue) => {
+        let questionNum = this.state.questionNum;
+        let answer = document.getElementsByName('q'+thisQuestionId);
+        let chosenAnswer = null;
+        let isAnswerTrue = null;
+        let checkedQuestions = this.state.checkedQuestions;
+
+        for (let i = 0; i < answer.length; i++) {
+            if (answer[i].checked) {
+                chosenAnswer = +answer[i].value;
+                console.log('chosenAnswer:', chosenAnswer);
+                break;
+            }
+        }
+
+        if(chosenAnswer === answerTrue) {
+            console.log('correct');
+            isAnswerTrue = true;
+        } else {
+            console.log('wrong');
+            isAnswerTrue = chosenAnswer;
+        }
+
+        checkedQuestions[questionNum] = isAnswerTrue;
+
+        this.setState({
+            checkedQuestions: checkedQuestions,
+            answerBtnDisabled: true
+        });
+        console.log('2this.state.checkedQuestions: ',this.state.checkedQuestions);
     }
 }

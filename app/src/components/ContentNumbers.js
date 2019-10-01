@@ -18,7 +18,12 @@ export default class ContentNumbersStart extends Component {
         let body = '';
 
         if (this.state.isQuestion && this.state.ticketNum>0) {
-            body = <Question ticketNum={this.state.ticketNum} allQuestions={cards['c'+this.state.ticketNum]} />;
+            let allQuestions = cards['c'+this.state.ticketNum];
+            let checkedQuestions = [];
+            for (let i = 0; i < allQuestions.length; i++) {
+                checkedQuestions.push(null);
+            }
+            body = <Question ticketNum={this.state.ticketNum} allQuestions={allQuestions} checkedQuestions={checkedQuestions} />;
         }
 
         if (this.state.isResult) {
