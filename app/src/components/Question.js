@@ -119,11 +119,11 @@ export default class Question extends Component {
                 );
             } else if (checkedQuestions[i-1] === true) {
                 paginationHtml.push(
-                    <button className="btn btn__pagination correct" key={i}>{i}</button>
+                    <button className="btn btn__pagination correct" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             } else if(checkedQuestions[i-1] !== true && checkedQuestions[i-1] !== null) {
                 paginationHtml.push(
-                    <button className="btn btn__pagination wrong" key={i}>{i}</button>
+                    <button className="btn btn__pagination wrong" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             } else {
                 paginationHtml.push(
