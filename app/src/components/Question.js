@@ -12,7 +12,8 @@ export default class Question extends Component {
             checkedQuestions: this.props.checkedQuestions, //[num][true/false]
             questionNum: 0, //default first question of ticket
             answerBtnDisabled: true,
-            isHelp: true
+            isHelp: true,
+            isHelpShown: false
         };
     }
 
@@ -25,22 +26,31 @@ export default class Question extends Component {
 
         let helpBtn = '';
         let helpHtml = '';
+        let helpHtmlClasses = 'exam-prompt';
         let helpHtmlRes = '';
-        if (checkedQuestions[this.state.questionNum] === true) {helpHtmlRes = 'Правильно'}
-        if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {helpHtmlRes = 'Ошибка'}
+        if (checkedQuestions[this.state.questionNum] === true) {
+            helpHtmlRes = 'Правильно';
+            helpHtmlClasses = 'exam-prompt correct';
+        }
+        if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {
+            helpHtmlRes = 'Ошибка';
+            helpHtmlClasses = 'exam-prompt wrong';
+        }
         let helpHtmlRow = checkedQuestions[this.state.questionNum] !== null ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
         if (this.state.isHelp && thisQuestion.help) {
             helpBtn = (
-                <button className="exam-prompt-btn">Подсказка</button>
+                <button className="exam-prompt-btn" onClick={this.handleClickHelp}>Подсказка</button>
             );
-            helpHtml = (
-                <div className="exam-prompt">
-                    <div className="exam-prompt__info">
-                        {helpHtmlRow}
-                        <div className="exam-prompt__text">{thisQuestion.help}</div>
+            if (this.state.isHelpShown) {
+                helpHtml = (
+                    <div className={helpHtmlClasses}>
+                        <div className="exam-prompt__info">
+                            {helpHtmlRow}
+                            <div className="exam-prompt__text">{thisQuestion.help}</div>
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
         }
 
         let answersHtml = [];
@@ -182,13 +192,18 @@ export default class Question extends Component {
     handleClickOpenQuestion = (num) => {
         if(num <= this.state.allQuestions.length-1) {
             this.setState({
-                questionNum: num
+                questionNum: num,
+                isHelpShown: false
             });
         }
-    }
+    };
 
     handleClickLabelAnswer = () => this.setState({
         answerBtnDisabled: false
+    });
+
+    handleClickHelp = () => this.setState({
+        isHelpShown: !this.state.isHelpShown
     });
 
     handleClickAnswerCheck = (thisQuestionId, answerTrue) => {
