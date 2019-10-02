@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import ContentExamStart from './ContentExam';
-import ContentNumbersStart from './ContentNumbers';
-import ContentTopicsStart from './ContentTropics';
-//import classNames from 'classnames';
+import React from 'react';
+import ContentExam from './ContentExam';
+import ContentNumbers from './ContentNumbers';
+import ContentTopics from './ContentTropics';
 
-
-class TabContent extends Component {
+class TabContent extends React.Component {
     render() {
 
         const {tabOpen} = this.props;
@@ -13,17 +11,17 @@ class TabContent extends Component {
         let body = '';
         if (tabOpen === 'tabExam') {
             body = (
-                <ContentExamStart tabOpen={tabOpen} />
+                <ContentExam tabOpen={tabOpen} />
             );
         }
         if (tabOpen === 'tabNumbers') {
             body = (
-                <ContentNumbersStart tabOpen={tabOpen} />
+                <ContentNumbers tabOpen={tabOpen} />
             );
         }
         if (tabOpen === 'tabTopics') {
             body = (
-                <ContentTopicsStart tabOpen={tabOpen} />
+                <ContentTopics tabOpen={tabOpen} />
             );
         }
 

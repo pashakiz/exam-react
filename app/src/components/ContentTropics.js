@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class ContentTopicsStart extends Component {
+export default class ContentTopics extends React.Component {
     render() {
 
         const {tabOpen} = this.props;

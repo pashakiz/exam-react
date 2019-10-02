@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Question from './Question';
 import Result from './Result';
 import cards from '../tickets';
 
-export default class ContentNumbersStart extends Component {
+export default class ContentNumbers extends React.Component {
 
     state = {
         isQuestion: false,
@@ -21,8 +21,21 @@ export default class ContentNumbersStart extends Component {
             isResult: false,
             ticketNum: 0,
             checkedQuestions: [],
-            checkedTicked: null
+            checkedTicked: null,
+            timerData: null
         });
+    };
+
+    getQuestionData = (checkedTicked, checkedQuestions, timerData) => {
+        this.setState({
+            isResult: true,
+            checkedQuestions: checkedQuestions,
+            checkedTicked: checkedTicked,
+            timerData: timerData
+        });
+        console.log('----ContentNumbers.getQuestionData.timerData: ', this.state.timerData);
+        console.log('----ContentNumbers.getQuestionData.checkedTicked: ', this.state.checkedTicked);
+        console.log('----ContentNumbers.getQuestionData.checkedQuestions: ', this.state.checkedQuestions);
     };
 
     render() {
@@ -39,7 +52,8 @@ export default class ContentNumbersStart extends Component {
             }
             body = <Question ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
-                             checkedQuestions={checkedQuestions} />;
+                             checkedQuestions={checkedQuestions}
+                             getQuestionData={this.getQuestionData}/>;
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
@@ -49,8 +63,6 @@ export default class ContentNumbersStart extends Component {
         }
 
         if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
-            console.log('tabOpen === tabNumbers');
-
             let buttons = [];
             for (let i=1; i<=20; i++) {
                 buttons.push(

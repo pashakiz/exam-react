@@ -1,14 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Timer from './Timer';
 import questions from '../questions';
 
-export default class Question extends Component {
+export default class Question extends React.Component {
 
     constructor(props) {
         super(props);
-
-        //this.getTimerData = this.getTimerData.bind(this);
-
         this.state = {
             isQuestionTrue: null, //null, true, false
             ticketNum: this.props.ticketNum,
@@ -18,13 +15,19 @@ export default class Question extends Component {
             answerBtnDisabled: true,
             isHelp: true,
             isHelpShown: false,
-            timerData: null
+            timerData: null,
+            timeOut: false
         };
     }
 
-    getTimerData = (value) => {
-        this.setState({ timerData: value });
-        console.log('----Question.getTimerData: ', this.state.timerData);
+    sendQuestionData = () =>  {
+        this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData);
+        console.log('Timer.sendTimerData:', this.state.min+':'+this.state.sec);
+    };
+
+    getTimerData = (timerData, timeOut) => {
+        this.setState({ timerData: timerData, timeOut: timeOut});
+        console.log('---Question.getTimerData: ', this.state.timerData, this.state.timeOut);
     };
 
     render() {
@@ -67,9 +70,6 @@ export default class Question extends Component {
         for (let i = 0; i < thisQuestion.answer.length; i++) {
             let answerId = 'q'+thisQuestionId+'-a'+(i+1);
             let answerName = 'q'+thisQuestionId;
-
-            /*add classes to .custom-control.custom-radio: wrong, correct*/
-
 
             if (checkedQuestions[this.state.questionNum] === null) {
                 //unanswered
@@ -171,7 +171,7 @@ export default class Question extends Component {
                             <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
                         </div>
                         <div className="exam__timer-mob">
-                            <Timer />
+                            Timer
                         </div>
                     </div>
                     <div className="exam-question__img">
@@ -246,5 +246,9 @@ export default class Question extends Component {
             answerBtnDisabled: true
         });
         console.log('2this.state.checkedQuestions: ',this.state.checkedQuestions);
+    };
+
+    checkTicketFinished() {
+        //
     }
 }

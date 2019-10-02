@@ -1,22 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class Timer extends Component {
+export default class Timer extends React.Component {
     constructor(props) {
         super(props);
-
-        //this.sendTimerData = this.sendTimerData.bind(this);
-
         this.state = {
             min: '00',
             sec: '00',
             timeout: false,
         };
     }
-
-    sendTimerData = () =>  {
-        this.props.getTimerData(this.state.min+':'+this.state.sec);
-        console.log('Timer.sendTimerData:', this.state.min+':'+this.state.sec);
-    };
 
     componentDidMount() {
         this.timerID = setInterval(
@@ -26,9 +18,6 @@ export default class Timer extends Component {
     }
 
     componentWillUnmount() {
-        this.sendTimerData.bind(this);
-        //this.props.getTimerData(this.state.min+':'+this.state.sec);
-        console.log('Timer.componentWillUnmount', this.state.min+':'+this.state.sec);
         clearInterval(this.timerID);
     }
 
@@ -40,7 +29,7 @@ export default class Timer extends Component {
         if (+sec+1 > 59) {
             min++;
             if (+min < 10) { min='0'+min }
-            if (+min > 20) { timeOut = true }
+            if (+min >= 20) { timeOut = true }
             sec = '00';
         } else {
             sec++;
@@ -52,6 +41,8 @@ export default class Timer extends Component {
             sec: sec,
             timeout: timeOut
         });
+
+        this.props.getTimerData(this.state.min+':'+this.state.sec, this.state.timeout);
     }
 
     render() {
@@ -60,7 +51,7 @@ export default class Timer extends Component {
             timerClasses = 'examtimer examtimer_overrun';
         }
         return (
-            <div className={timerClasses} onClick={this.sendTimerData} >
+            <div className={timerClasses}>
                 {this.state.min}:{this.state.sec}
             </div>
         );

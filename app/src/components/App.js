@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import TabContent from './TabContent';
 
-class App extends Component {
+class App extends React.Component {
 
     //tabExam, tabNumbers, tabTopics
     state = {

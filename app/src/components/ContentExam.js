@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class ContentExamStart extends Component {
+export default class ContentExam extends React.Component {
     render() {
 
         const {tabOpen} = this.props;
