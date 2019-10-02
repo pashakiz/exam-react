@@ -37,6 +37,10 @@ export default class Result extends React.Component {
                 title1 = '';
                 title2 = 'Тест не сдан!';
             }
+            if (this.props.timeOut) {
+                title1 = '';
+                title2 = 'Тест не сдан!';
+            }
         }
 
         let timeRow = <div className="exam-result__label1">{this.props.timerData}</div>;

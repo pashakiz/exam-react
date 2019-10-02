@@ -22,16 +22,18 @@ export default class ContentNumbers extends React.Component {
             ticketNum: 0,
             checkedQuestions: [],
             checkedTicked: null,
-            timerData: null
+            timerData: null,
+            timeOut: false
         });
     };
 
-    getQuestionData = (checkedTicked, checkedQuestions, timerData) => {
+    getQuestionData = (checkedTicked, checkedQuestions, timerData, timeOut) => {
         this.setState({
             isResult: true,
             checkedQuestions: checkedQuestions,
             checkedTicked: checkedTicked,
-            timerData: timerData
+            timerData: timerData,
+            timeOut: timeOut
         });
         console.log('----ContentNumbers.getQuestionData.timerData: ', timerData);
         console.log('----ContentNumbers.getQuestionData.checkedTicked: ', checkedTicked);
@@ -58,7 +60,8 @@ export default class ContentNumbers extends React.Component {
             body = <Result checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
-                           timerData={this.state.timerData}/>;
+                           timerData={this.state.timerData}
+                           timeOut={this.state.timeOut}/>;
         }
 
         if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {

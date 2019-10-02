@@ -248,6 +248,10 @@ export default class Question extends React.Component {
             answerBtnDisabled: true
         });
 
+        if (isAnswerTrue === true) {
+            this.handleClickOpenQuestion(questionNum+1);
+        }
+
         this.checkTicketFinished();
     };
 
@@ -261,7 +265,7 @@ export default class Question extends React.Component {
 
         if (count === this.state.checkedQuestions.length) {
             //ticked end
-            this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData);
+            this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
         }
     }
 }
