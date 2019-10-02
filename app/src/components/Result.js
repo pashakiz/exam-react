@@ -39,10 +39,16 @@ export default class Result extends React.Component {
             }
         }
 
+        let timeRow = <div className="exam-result__label1">{this.props.timerData}</div>;
+        if (this.props.timeOut) {
+            timeRow = <div className="exam-result__label1 exam-result__label1_overrun">{this.props.timerData}</div>;
+        }
+
         return (
             <div className="exam-result">
                 <div className="exam-result__title">Результат</div>
                 <div className="exam-result__score">{this.correctQuestionsCount}/{this.allQuestionsCount}</div>
+                {timeRow}
                 <div className="exam-result__label1">{title1}</div>
                 <div className="exam-result__label2">{title2}</div>
                 <button className="btn btn2" onClick={this.props.handleRestart}>НАЗАД</button>

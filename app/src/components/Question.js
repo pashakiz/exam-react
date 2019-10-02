@@ -20,11 +20,6 @@ export default class Question extends React.Component {
         };
     }
 
-    sendQuestionData = () =>  {
-        this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData);
-        console.log('Timer.sendTimerData:', this.state.min+':'+this.state.sec);
-    };
-
     getTimerData = (timerData, timeOut) => {
         this.setState({ timerData: timerData, timeOut: timeOut});
         console.log('---Question.getTimerData: ', this.state.timerData, this.state.timeOut);
@@ -252,10 +247,21 @@ export default class Question extends React.Component {
             checkedQuestions: checkedQuestions,
             answerBtnDisabled: true
         });
-        console.log('2this.state.checkedQuestions: ',this.state.checkedQuestions);
+
+        this.checkTicketFinished();
     };
 
     checkTicketFinished() {
-        //
+        let count = 0;
+        for (let i = 0; i < this.state.checkedQuestions.length; i++){
+            if (this.state.checkedQuestions[i] !== null) {
+                count++;
+            }
+        }
+
+        if (count === this.state.checkedQuestions.length) {
+            //ticked end
+            this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData);
+        }
     }
 }
