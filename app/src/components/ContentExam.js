@@ -1,6 +1,13 @@
 import React from 'react';
 
 export default class ContentExam extends React.Component {
+
+    state = {
+        isQuestion: false,
+        isResult: false,
+        ticketNum: 0
+    };
+
     render() {
 
         const {tabOpen} = this.props;
@@ -30,5 +37,9 @@ export default class ContentExam extends React.Component {
     handleClick = () => {
         let num = this.randomInteger(1, 80);
         console.log(num);
+        this.setState({
+            isQuestion: true,
+            ticketNum: num
+        });
     }
 }
