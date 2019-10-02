@@ -154,6 +154,11 @@ export default class Question extends React.Component {
             /*else3: correct question mark*/
         }
 
+        let timerClasses = 'examtimer';
+        if (this.state.timeOut) {
+            timerClasses = 'examtimer examtimer_overrun';
+        }
+
         return(
             <div className="exam-question">
                 <div className="exam-question__header d-flex justify-content-between align-items-start">
@@ -171,7 +176,9 @@ export default class Question extends React.Component {
                             <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
                         </div>
                         <div className="exam__timer-mob">
-                            <Timer getTimerData={this.getTimerData} />
+                            <div className={timerClasses}>
+                                {this.state.timerData}
+                            </div>
                         </div>
                     </div>
                     <div className="exam-question__img">
