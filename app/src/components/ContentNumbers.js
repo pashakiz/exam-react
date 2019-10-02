@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import Question from './Question';
 import Result from './Result';
 import cards from '../tickets';
@@ -10,7 +11,8 @@ export default class ContentNumbers extends React.Component {
         isResult: false,
         ticketNum: 0,
         checkedQuestions: [],
-        checkedTicked: null
+        checkedTicked: null,
+        localStorage: window.localStorage
     };
 
     handleRestart = () => {
@@ -20,8 +22,7 @@ export default class ContentNumbers extends React.Component {
             ticketNum: 0,
             checkedQuestions: [],
             checkedTicked: null,
-            timerData: null,
-            timeOut: false
+            localStorage: window.localStorage
         });
     };
 
@@ -62,23 +63,42 @@ export default class ContentNumbers extends React.Component {
         if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
             let buttons = [];
             for (let i=1; i<=20; i++) {
+                let i20 = i+20;
+                let i40 = i+40;
+                let i60 = i+60;
                 buttons.push(
                     <tr key={i}>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket"
+                            <button className={classNames(
+                                        'btn btn1 btn_ticket',
+                                        { 'correct': (this.state.localStorage.getItem('ticket'+i) === 'true') },
+                                        { 'wrong': (this.state.localStorage.getItem('ticket'+i) === 'false') }
+                                    )}
                                     onClick={this.handleClick.bind(this, i)}>Билет №{i}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket"
-                                    onClick={this.handleClick.bind(this, i+20)}>Билет №{i+20}</button>
+                            <button className={classNames(
+                                        'btn btn1 btn_ticket',
+                                        { 'correct': (this.state.localStorage.getItem('ticket'+i20) === 'true') },
+                                        { 'wrong': (this.state.localStorage.getItem('ticket'+i20) === 'false') }
+                                    )}
+                                    onClick={this.handleClick.bind(this, i20)}>Билет №{i20}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket"
-                                    onClick={this.handleClick.bind(this, i+40)}>Билет №{i+40}</button>
+                            <button className={classNames(
+                                        'btn btn1 btn_ticket',
+                                        { 'correct': (this.state.localStorage.getItem('ticket'+i40) === 'true') },
+                                        { 'wrong': (this.state.localStorage.getItem('ticket'+i40) === 'false') }
+                                    )}
+                                    onClick={this.handleClick.bind(this, i40)}>Билет №{i40}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket"
-                                    onClick={this.handleClick.bind(this, i+60)}>Билет №{i+60}</button>
+                            <button className={classNames(
+                                        'btn btn1 btn_ticket',
+                                        { 'correct': (this.state.localStorage.getItem('ticket'+i60) === 'true') },
+                                        { 'wrong': (this.state.localStorage.getItem('ticket'+i60) === 'false') }
+                                    )}
+                                    onClick={this.handleClick.bind(this, i60)}>Билет №{i60}</button>
                         </td>
                     </tr>
                 );

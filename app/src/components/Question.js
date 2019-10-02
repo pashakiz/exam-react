@@ -22,11 +22,10 @@ export default class Question extends React.Component {
 
     getTimerData = (timerData, timeOut) => {
         this.setState({ timerData: timerData, timeOut: timeOut});
-        console.log('---Question.getTimerData: ', this.state.timerData, this.state.timeOut);
     };
 
     render() {
-        console.log('1this.state.checkedQuestions: ',this.state.checkedQuestions);
+        //console.log('1this.state.checkedQuestions: ',this.state.checkedQuestions);
         const noImage = 'img/noimage.png';
         const thisQuestionId = this.state.allQuestions[this.state.questionNum];
         const thisQuestion = questions[thisQuestionId];
@@ -145,8 +144,6 @@ export default class Question extends React.Component {
                     <button className="btn btn__pagination" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             }
-            /*else2: wrong question mark*/
-            /*else3: correct question mark*/
         }
 
         let timerClasses = 'examtimer';
@@ -228,16 +225,13 @@ export default class Question extends React.Component {
         for (let i = 0; i < answer.length; i++) {
             if (answer[i].checked) {
                 chosenAnswer = +answer[i].value;
-                console.log('chosenAnswer:', chosenAnswer);
                 break;
             }
         }
 
         if(chosenAnswer === answerTrue) {
-            console.log('correct');
             isAnswerTrue = true;
         } else {
-            console.log('wrong');
             isAnswerTrue = chosenAnswer;
         }
 

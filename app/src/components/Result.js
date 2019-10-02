@@ -9,6 +9,20 @@ export default class Result extends React.Component {
         };
     }
 
+    handleClickBack = () => {
+        if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
+            window.localStorage.setItem('ticket'+this.state.checkedTicked, true);
+        } else {
+            window.localStorage.setItem('ticket'+this.state.checkedTicked, false);
+        }
+
+        this.props.handleRestart();
+    };
+
+    componentWillUnmount() {
+
+    }
+
     render() {
         this.allQuestionsCount = this.state.checkedQuestions.length;
         this.correctQuestionsCount = 0;
@@ -55,25 +69,8 @@ export default class Result extends React.Component {
                 {timeRow}
                 <div className="exam-result__label1">{title1}</div>
                 <div className="exam-result__label2">{title2}</div>
-                <button className="btn btn2" onClick={this.props.handleRestart}>НАЗАД</button>
+                <button className="btn btn2" onClick={this.handleClickBack}>НАЗАД</button>
             </div>
         );
-    }
-
-    handleBack = () => this.setState({
-        tabOpen: 'tabExam'
-    });
-
-    sendTimerData = () =>  {
-        this.props.handleRestart();
-        console.log('Timer.sendTimerData:', this.state.min+':'+this.state.sec);
-    };
-
-    componentWillUnmount() {
-        if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
-            localStorage.setItem('ticket'+this.state.checkedTicked, true);
-        } else {
-            localStorage.setItem('ticket'+this.state.checkedTicked, false);
-        }
     }
 }
