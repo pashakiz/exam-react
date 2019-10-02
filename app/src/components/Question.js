@@ -171,7 +171,7 @@ export default class Question extends React.Component {
                             <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
                         </div>
                         <div className="exam__timer-mob">
-                            Timer
+                            <Timer getTimerData={this.getTimerData} />
                         </div>
                     </div>
                     <div className="exam-question__img">
