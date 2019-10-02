@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
+import Timer from './Timer';
 import questions from '../questions';
 
 export default class Question extends Component {
 
     constructor(props) {
         super(props);
+
+        //this.getTimerData = this.getTimerData.bind(this);
+
         this.state = {
             isQuestionTrue: null, //null, true, false
             ticketNum: this.props.ticketNum,
@@ -13,9 +17,15 @@ export default class Question extends Component {
             questionNum: 0, //default first question of ticket
             answerBtnDisabled: true,
             isHelp: true,
-            isHelpShown: false
+            isHelpShown: false,
+            timerData: null
         };
     }
+
+    getTimerData = (value) => {
+        this.setState({ timerData: value });
+        console.log('----Question.getTimerData: ', this.state.timerData);
+    };
 
     render() {
         console.log('1this.state.checkedQuestions: ',this.state.checkedQuestions);
@@ -151,7 +161,7 @@ export default class Question extends Component {
                         {paginationHtml}
                     </div>
                     <div className="exam__timer">
-                        <div id="examtimer" className="examtimer">00:00</div>
+                        <Timer getTimerData={this.getTimerData} />
                     </div>
                 </div>
                 <div className="exam-question__body">
@@ -161,7 +171,7 @@ export default class Question extends Component {
                             <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
                         </div>
                         <div className="exam__timer-mob">
-                            <div id="examtimer-mob" className="examtimer">00:00</div>
+                            <Timer />
                         </div>
                     </div>
                     <div className="exam-question__img">

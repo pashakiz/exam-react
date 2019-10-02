@@ -1,14 +1,28 @@
 import React, {Component} from 'react';
 import Question from './Question';
+import Result from './Result';
 import cards from '../tickets';
 
 export default class ContentNumbersStart extends Component {
 
     state = {
-        isStart: this.props,
         isQuestion: false,
         isResult: false,
-        ticketNum: 0
+        ticketNum: 0,
+        checkedQuestions: [],
+        checkedTicked: null
+    };
+
+    handleRestart = () => {
+        //update component - нажата кнопка НАЗАД в Result
+        console.log('ContentNumber: нажата кнопка НАЗАД в Result');
+        this.setState({
+            isQuestion: false,
+            isResult: false,
+            ticketNum: 0,
+            checkedQuestions: [],
+            checkedTicked: null
+        });
     };
 
     render() {
@@ -23,11 +37,15 @@ export default class ContentNumbersStart extends Component {
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question ticketNum={this.state.ticketNum} allQuestions={allQuestions} checkedQuestions={checkedQuestions} />;
+            body = <Question ticketNum={this.state.ticketNum}
+                             allQuestions={allQuestions}
+                             checkedQuestions={checkedQuestions} />;
         }
 
-        if (this.state.isResult) {
-            body = <div>Result</div>;
+        if (this.state.isResult && this.state.checkedQuestions.length) {
+            body = <Result checkedQuestions={this.state.checkedQuestions}
+                           checkedTicked={this.state.checkedTicked}
+                           handleRestart={this.handleRestart.bind(this)} />;
         }
 
         if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
@@ -38,16 +56,20 @@ export default class ContentNumbersStart extends Component {
                 buttons.push(
                     <tr key={i}>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i)}>Билет №{i}</button>
+                            <button className="btn btn1 btn_ticket"
+                                    onClick={this.handleClick.bind(this, i)}>Билет №{i}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+20)}>Билет №{i+20}</button>
+                            <button className="btn btn1 btn_ticket"
+                                    onClick={this.handleClick.bind(this, i+20)}>Билет №{i+20}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+40)}>Билет №{i+40}</button>
+                            <button className="btn btn1 btn_ticket"
+                                    onClick={this.handleClick.bind(this, i+40)}>Билет №{i+40}</button>
                         </td>
                         <td className="cardstable__td">
-                            <button className="btn btn1 btn_ticket" onClick={this.handleClick.bind(this, i+60)}>Билет №{i+60}</button>
+                            <button className="btn btn1 btn_ticket"
+                                    onClick={this.handleClick.bind(this, i+60)}>Билет №{i+60}</button>
                         </td>
                     </tr>
                 );
