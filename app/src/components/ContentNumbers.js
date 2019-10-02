@@ -14,8 +14,6 @@ export default class ContentNumbers extends React.Component {
     };
 
     handleRestart = () => {
-        //update component - нажата кнопка НАЗАД в Result
-        console.log('ContentNumber: нажата кнопка НАЗАД в Result');
         this.setState({
             isQuestion: false,
             isResult: false,
@@ -35,9 +33,6 @@ export default class ContentNumbers extends React.Component {
             timerData: timerData,
             timeOut: timeOut
         });
-        console.log('----ContentNumbers.getQuestionData.timerData: ', timerData);
-        console.log('----ContentNumbers.getQuestionData.checkedTicked: ', checkedTicked);
-        console.log('----ContentNumbers.getQuestionData.checkedQuestions: ', checkedQuestions);
     };
 
     render() {
