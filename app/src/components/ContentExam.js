@@ -1,4 +1,5 @@
 import React from 'react';
+import {myConst} from '../const';
 
 export default class ContentExam extends React.Component {
 
@@ -35,8 +36,7 @@ export default class ContentExam extends React.Component {
     }
 
     handleClick = () => {
-        let num = this.randomInteger(1, 80);
-        console.log(num);
+        let num = this.randomInteger(1, myConst.ALL_TICKETS_NUM);
         this.setState({
             isQuestion: true,
             ticketNum: num

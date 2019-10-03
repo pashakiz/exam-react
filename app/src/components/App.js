@@ -1,12 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import {myConst} from '../const';
 import TabContent from './TabContent';
 
 class App extends React.Component {
 
     //tabExam, tabNumbers, tabTopics
     state = {
-        tabOpen: 'tabNumbers'
+        tabOpen: myConst.ACTIVE_TAB_START
     };
 
     render() {

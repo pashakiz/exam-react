@@ -1,6 +1,10 @@
 import React from 'react';
 
 export default class ContentTopics extends React.Component {
+    state = {
+        localStorage: window.localStorage
+    };
+
     render() {
 
         const {tabOpen} = this.props;

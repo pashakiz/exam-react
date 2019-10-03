@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import {myConst} from '../const';
 import Question from './Question';
 import Result from './Result';
 import cards from '../tickets';
@@ -111,6 +112,9 @@ export default class ContentNumbers extends React.Component {
                             {buttons}
                         </tbody>
                     </table>
+                    <div className="exam__footer d-flex justify-content-center align-items-center">
+                        <button className="btn btn_clear" onClick={this.handleClickClearLocalStorage}>Очистить историю ответов</button>
+                    </div>
                 </div>
             );
         }
@@ -121,6 +125,15 @@ export default class ContentNumbers extends React.Component {
             </div>
         )
     }
+
+    handleClickClearLocalStorage = () => {
+        for (let i = 1; i <= myConst.ALL_TICKETS_NUM; i++) {
+            window.localStorage.removeItem('ticket'+i);
+        }
+        this.setState({
+            localStorage: window.localStorage
+        });
+    };
 
     handleClick = (i) => {
         this.setState({
