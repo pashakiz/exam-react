@@ -7,9 +7,11 @@ import cards from '../tickets';
 export default class ContentExam extends React.Component {
 
     state = {
+        examMode: 'ticket',
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
+        chosenTopicNums: [],
         isHelp: false,
         checkedQuestions: [],
         checkedTicked: null,
@@ -48,20 +50,23 @@ export default class ContentExam extends React.Component {
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question ticketNum={this.state.ticketNum}
+            body = <Question examMode={this.state.examMode}
+                             chosenTopicNums={this.state.chosenTopicNums}
+                             ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
                              checkedQuestions={checkedQuestions}
                              getQuestionData={this.getQuestionData}
-                             isHelp={this.state.isHelp}
-                             isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
+                             isHelp={this.state.isHelp}/>;
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result checkedQuestions={this.state.checkedQuestions}
+            body = <Result examMode={this.state.examMode}
+                           checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
                            timerData={this.state.timerData}
-                           timeOut={this.state.timeOut}/>;
+                           timeOut={this.state.timeOut}
+                           isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
         if (tabOpen === 'tabExam' && !this.state.isQuestion && !this.state.isResult) {

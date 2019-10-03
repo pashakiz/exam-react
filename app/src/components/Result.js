@@ -4,6 +4,7 @@ export default class Result extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            examMode: this.props.examMode,
             checkedQuestions: this.props.checkedQuestions,
             checkedTicked: this.props.checkedTicked,
             isSaveToLocalStorage: this.props.isSaveToLocalStorage
@@ -11,7 +12,7 @@ export default class Result extends React.Component {
     }
 
     handleClickBack = () => {
-        if (this.state.isSaveToLocalStorage) {
+        if (this.state.isSaveToLocalStorage && this.state.examMode === 'ticket') {
             if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
                 window.localStorage.setItem('ticket'+this.state.checkedTicked, true);
             } else {
@@ -22,11 +23,10 @@ export default class Result extends React.Component {
         this.props.handleRestart();
     };
 
-    componentWillUnmount() {
-
-    }
-
     render() {
+        //this.state.examMode === 'ticket'
+
+
         this.allQuestionsCount = this.state.checkedQuestions.length;
         this.correctQuestionsCount = 0;
         for (let i = 0; i < this.allQuestionsCount; i++) {
@@ -37,7 +37,7 @@ export default class Result extends React.Component {
         let title1 = '';
         let title2 = '';
 
-        if(this.allQuestionsCount === 20) {
+        if (this.allQuestionsCount === 20 && this.state.examMode === 'ticket') {
             if (this.correctQuestionsCount === 20) {
                 title1 = 'Отлично';
                 title2 = 'Тест сдан!';
@@ -60,9 +60,12 @@ export default class Result extends React.Component {
             }
         }
 
-        let timeRow = <div className="exam-result__label1">{this.props.timerData}</div>;
-        if (this.props.timeOut) {
-            timeRow = <div className="exam-result__label1 exam-result__label1_overrun">{this.props.timerData}</div>;
+        let timeRow = '';
+        if (this.state.examMode === 'ticket') {
+            timeRow = <div className="exam-result__label1">{this.props.timerData}</div>;
+            if (this.props.timeOut) {
+                timeRow = <div className="exam-result__label1 exam-result__label1_overrun">{this.props.timerData}</div>;
+            }
         }
 
         return (

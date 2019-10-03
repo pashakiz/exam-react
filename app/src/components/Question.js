@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import Timer from './Timer';
 import questions from '../questions';
 
@@ -7,8 +8,10 @@ export default class Question extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            examMode: this.props.examMode,
             isQuestionTrue: null, //null, true, false
             ticketNum: this.props.ticketNum,
+            chosenTopicNums: this.props.chosenTopicNums,
             allQuestions: this.props.allQuestions, //[num][id]
             checkedQuestions: this.props.checkedQuestions, //[num][true/false]
             questionNum: 0, //default first question of ticket
@@ -25,7 +28,7 @@ export default class Question extends React.Component {
     };
 
     render() {
-        //console.log('1this.state.checkedQuestions: ',this.state.checkedQuestions);
+
         const noImage = 'img/noimage.png';
         const thisQuestionId = this.state.allQuestions[this.state.questionNum];
         const thisQuestion = questions[thisQuestionId];
@@ -125,30 +128,63 @@ export default class Question extends React.Component {
             }
         }
 
+        let timerClasses = 'examtimer';
+        if (this.state.timeOut) {
+            timerClasses = 'examtimer examtimer_overrun';
+        }
+
         let paginationHtml = [];
         for (let i = 1; i <= this.state.allQuestions.length; i++) {
             if (i === this.state.questionNum+1) {
                 paginationHtml.push(
-                    <button className="btn btn__pagination active" key={i}>{i}</button>
+                    <button className={classNames('btn btn__pagination active', { wide: (i > 99) })}
+                            key={i}>{i}</button>
                 );
             } else if (checkedQuestions[i-1] === true) {
                 paginationHtml.push(
-                    <button className="btn btn__pagination correct" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
+                    <button className={classNames('btn btn__pagination correct', { wide: (i > 99) })}
+                            key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             } else if(checkedQuestions[i-1] !== true && checkedQuestions[i-1] !== null) {
                 paginationHtml.push(
-                    <button className="btn btn__pagination wrong" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
+                    <button className={classNames('btn btn__pagination wrong', { wide: (i > 99) })}
+                            key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             } else {
                 paginationHtml.push(
-                    <button className="btn btn__pagination" key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
+                    <button className={classNames('btn btn__pagination', { wide: (i > 99) })}
+                            key={i} onClick={this.handleClickOpenQuestion.bind(this, i-1)}>{i}</button>
                 );
             }
         }
 
-        let timerClasses = 'examtimer';
-        if (this.state.timeOut) {
-            timerClasses = 'examtimer examtimer_overrun';
+        let questionTitle = '';
+        let timerHtml = '';
+        if (this.state.examMode === 'ticket') {
+
+            questionTitle = (
+                <div className="exam-question__title d-flex justify-content-between align-items-start">
+                    <div className="exam-question__titletxt">
+                        <div className="exam-question__ticket-num">Билет №{this.state.ticketNum}</div>
+                        <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
+                    </div>
+                    <div className="exam__timer-mob">
+                        <div className={timerClasses}>
+                            {this.state.timerData}
+                        </div>
+                    </div>
+                </div>
+            );
+
+            timerHtml = (
+                <div className="exam__timer">
+                    <Timer getTimerData={this.getTimerData} />
+                </div>
+            );
+
+        } else if (this.state.examMode === 'topic') {
+            questionTitle = '';
+            timerHtml = '';
         }
 
         let btnNext = 'Пропустить';
@@ -162,22 +198,10 @@ export default class Question extends React.Component {
                     <div className="exam__pagination">
                         {paginationHtml}
                     </div>
-                    <div className="exam__timer">
-                        <Timer getTimerData={this.getTimerData} />
-                    </div>
+                    {timerHtml}
                 </div>
                 <div className="exam-question__body">
-                    <div className="exam-question__title d-flex justify-content-between align-items-start">
-                        <div className="exam-question__titletxt">
-                            <div className="exam-question__ticket-num">Билет №{this.state.ticketNum}</div>
-                            <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
-                        </div>
-                        <div className="exam__timer-mob">
-                            <div className={timerClasses}>
-                                {this.state.timerData}
-                            </div>
-                        </div>
-                    </div>
+                    {questionTitle}
                     <div className="exam-question__img">
                         <img src={thisQuestion.img ? thisQuestion.img : noImage} alt="" />
                     </div>
@@ -264,7 +288,11 @@ export default class Question extends React.Component {
 
         if (count === this.state.checkedQuestions.length) {
             //ticked end
-            this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
+            if (this.state.examMode === 'ticket') {
+                this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
+            } else if (this.state.examMode === 'topic') {
+                this.props.getQuestionData(this.state.chosenTopicNums, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
+            }
         }
     }
 }
