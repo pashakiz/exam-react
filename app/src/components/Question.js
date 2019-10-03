@@ -151,6 +151,11 @@ export default class Question extends React.Component {
             timerClasses = 'examtimer examtimer_overrun';
         }
 
+        let btnNext = 'Пропустить';
+        if (checkedQuestions[this.state.questionNum] !== null && checkedQuestions[this.state.questionNum] !== true) {
+            btnNext = 'Продолжить';
+        }
+
         return(
             <div className="exam-question">
                 <div className="exam-question__header d-flex justify-content-between align-items-start">
@@ -188,7 +193,7 @@ export default class Question extends React.Component {
                                     onClick={this.handleClickAnswerCheck.bind(this, thisQuestionId, thisQuestion.answerTrue)}
                                     disabled={this.state.answerBtnDisabled}>Ответить</button>
                             <button className="btn btn3 exam-question__btn exam-question__btn-next"
-                                    onClick={this.handleClickOpenQuestion.bind(this, this.state.questionNum+1)}>Пропустить</button>
+                                    onClick={this.handleClickOpenQuestion.bind(this, this.state.questionNum+1)}>{btnNext}</button>
                         </div>
                         {helpBtn}
                     </div>
