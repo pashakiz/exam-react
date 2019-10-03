@@ -2,6 +2,10 @@ import React from 'react';
 
 export default class ContentTopics extends React.Component {
     state = {
+        isQuestion: false,
+        isResult: false,
+        ticketNum: 0,
+        isHelp: true,
         localStorage: window.localStorage
     };
 

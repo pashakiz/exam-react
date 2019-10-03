@@ -5,15 +5,18 @@ export default class Result extends React.Component {
         super(props);
         this.state = {
             checkedQuestions: this.props.checkedQuestions,
-            checkedTicked: this.props.checkedTicked
+            checkedTicked: this.props.checkedTicked,
+            isSaveToLocalStorage: this.props.isSaveToLocalStorage
         };
     }
 
     handleClickBack = () => {
-        if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
-            window.localStorage.setItem('ticket'+this.state.checkedTicked, true);
-        } else {
-            window.localStorage.setItem('ticket'+this.state.checkedTicked, false);
+        if (this.state.isSaveToLocalStorage) {
+            if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
+                window.localStorage.setItem('ticket'+this.state.checkedTicked, true);
+            } else {
+                window.localStorage.setItem('ticket'+this.state.checkedTicked, false);
+            }
         }
 
         this.props.handleRestart();

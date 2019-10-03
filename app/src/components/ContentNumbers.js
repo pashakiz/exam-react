@@ -11,8 +11,10 @@ export default class ContentNumbers extends React.Component {
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
+        isHelp: true,
         checkedQuestions: [],
         checkedTicked: null,
+        isSaveToLocalStorage: true,
         localStorage: window.localStorage
     };
 
@@ -23,6 +25,7 @@ export default class ContentNumbers extends React.Component {
             ticketNum: 0,
             checkedQuestions: [],
             checkedTicked: null,
+            isSaveToLocalStorage: true,
             localStorage: window.localStorage
         });
     };
@@ -50,7 +53,9 @@ export default class ContentNumbers extends React.Component {
             body = <Question ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
                              checkedQuestions={checkedQuestions}
-                             getQuestionData={this.getQuestionData}/>;
+                             getQuestionData={this.getQuestionData}
+                             isHelp={this.state.isHelp}
+                             isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {

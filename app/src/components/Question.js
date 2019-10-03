@@ -13,7 +13,7 @@ export default class Question extends React.Component {
             checkedQuestions: this.props.checkedQuestions, //[num][true/false]
             questionNum: 0, //default first question of ticket
             answerBtnDisabled: true,
-            isHelp: true,
+            isHelp: this.props.isHelp,
             isHelpShown: false,
             timerData: null,
             timeOut: false
