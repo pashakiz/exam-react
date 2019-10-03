@@ -17,7 +17,7 @@ export default class ContentExam extends React.Component {
             body = (
                 <div className="exam__random">
                     <p>На экзамен даётся 20 минут.<br/>Внимательно читайте каждый вопрос и все варианты ответов.<br/>Не торопитесь. Удачи!</p>
-                    <button className="btn btn2" onClick={this.handleClick}>НАЧАТЬ</button>
+                    <button className="btn btn2 btn_start" onClick={this.handleClick}>НАЧАТЬ</button>
                 </div>
             );
         }

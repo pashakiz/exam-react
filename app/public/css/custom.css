@@ -186,6 +186,9 @@ p {
     background: #f37e00;
     color: #fff;
 }
+.btn_start {
+    padding: 10px 30px;
+}
 .exam__tab {
     padding: 10px 10px;
     font-size: 16px;

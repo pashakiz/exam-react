@@ -80,7 +80,7 @@ export default class ContentTopics extends React.Component {
                         </div>
                     </div>
                     <div className="text-center" style={{marginTop: '20px'}}>
-                        <button className="btn btn2" id="exam-bytopic-start">НАЧАТЬ</button>
+                        <button className="btn btn2 btn_start" id="exam-bytopic-start">НАЧАТЬ</button>
                     </div>
                 </div>
             );
