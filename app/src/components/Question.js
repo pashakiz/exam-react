@@ -140,7 +140,7 @@ export default class Question extends React.Component {
                 if (i <= myConst.QUESTIONS_PER_TICKET) {
                     if (i === 1) { //1th
                         paginationHtml.push(
-                            <button className={classNames('btn btn__pagination',
+                            <button className={classNames('btn btn__pagination c_1st',
                                     { active: (i === this.state.questionNum+1) },
                                     { correct: (checkedQuestions[i-1] === true) },
                                     { wrong: (checkedQuestions[i-1] !== true && checkedQuestions[i-1] !== null) },
@@ -150,22 +150,22 @@ export default class Question extends React.Component {
                         );
                     } else if (i === 2 && this.state.questionNum+1 > myConst.QUESTIONS_PER_TICKET-10) { //2th
                         paginationHtml.push(
-                            <button className='btn btn__pagination'
+                            <button className='btn btn__pagination c_2nd'
                                     key={i}>...</button>
                         );
                     } else if (i === myConst.QUESTIONS_PER_TICKET) { //20th
                         paginationHtml.push(
-                            <button className={classNames('btn btn__pagination',
+                            <button className={classNames('btn btn__pagination c_last',
                                     { active: (this.state.allQuestions.length === this.state.questionNum+1) },
                                     { correct: (checkedQuestions[this.state.allQuestions.length-1] === true) },
                                     { wrong: (checkedQuestions[this.state.allQuestions.length-1] !== true && checkedQuestions[this.state.allQuestions.length-1] !== null) },
                                     { wide: (this.state.allQuestions.length > 99) },
                                 )}
-                                key={this.state.allQuestions.length} onClick={(i !== this.state.questionNum+1) ? this.handleClickOpenQuestion.bind(this, this.state.allQuestions.length-1) : function(){}}>{this.state.allQuestions.length}</button>
+                                key={i} onClick={(i !== this.state.questionNum+1) ? this.handleClickOpenQuestion.bind(this, this.state.allQuestions.length-1) : function(){}}>{this.state.allQuestions.length}</button>
                         );
                     } else  if (i === myConst.QUESTIONS_PER_TICKET-1) { //19th
                         paginationHtml.push(
-                            <button className='btn btn__pagination'
+                            <button className='btn btn__pagination c_000'
                                     key={i}>...</button>
                         );
                     } else if (this.state.questionNum+1 > myConst.QUESTIONS_PER_TICKET-10) {
@@ -173,17 +173,17 @@ export default class Question extends React.Component {
                         let iDiff = i + diff;
                         console.log(diff);
                         paginationHtml.push(
-                            <button className={classNames('btn btn__pagination',
+                            <button className={classNames('btn btn__pagination c_diff',
                                     { active: (iDiff === this.state.questionNum+1) },
                                     { correct: (checkedQuestions[iDiff-1] === true) },
                                     { wrong: (checkedQuestions[iDiff-1] !== true && checkedQuestions[iDiff-1] !== null) },
                                     { wide: (i > 99) },
                                 )}
-                                key={iDiff} onClick={(iDiff !== this.state.questionNum+1) ? this.handleClickOpenQuestion.bind(this, iDiff-1) : function(){} } >{iDiff}</button>
+                                key={i} onClick={(iDiff !== this.state.questionNum+1) ? this.handleClickOpenQuestion.bind(this, iDiff-1) : function(){} } >{iDiff}</button>
                         );
                     } else {
                         paginationHtml.push(
-                            <button className={classNames('btn btn__pagination',
+                            <button className={classNames('btn btn__pagination c_else',
                                     { active: (i === this.state.questionNum+1) },
                                     { correct: (checkedQuestions[i-1] === true) },
                                     { wrong: (checkedQuestions[i-1] !== true && checkedQuestions[i-1] !== null) },
