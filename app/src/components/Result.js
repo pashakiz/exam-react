@@ -24,9 +24,6 @@ export default class Result extends React.Component {
     };
 
     render() {
-        //this.state.examMode === 'ticket'
-
-
         this.allQuestionsCount = this.state.checkedQuestions.length;
         this.correctQuestionsCount = 0;
         for (let i = 0; i < this.allQuestionsCount; i++) {
