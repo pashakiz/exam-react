@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {myConst} from '../const';
 import TabContent from './TabContent';
-//test
+
 class App extends React.Component {
 
     //tabExam, tabNumbers, tabTopics
