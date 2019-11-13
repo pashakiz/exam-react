@@ -1,50 +1,47 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import classNames from 'classnames';
-import {myConst} from '../const';
+import {selectTab} from '../actions';
 import TabContent from './TabContent';
 
 class App extends React.Component {
 
-    //tabExam, tabNumbers, tabTopics
-    state = {
-        tabOpen: myConst.ACTIVE_TAB_START
-    };
-
     render() {
         const TabExamClasses = classNames(
             'btn btn_tab exam__tab exam__tab_exam',
-            { active: (this.state.tabOpen === 'tabExam') }
+            { active: (!this.props.tabActive || this.props.tabActive === 'tabExam') }
         );
         const TabNumbersClasses = classNames(
             'btn btn_tab exam__tab exam__tab_numbers',
-            { active: (this.state.tabOpen === 'tabNumbers') }
+            { active: (this.props.tabActive === 'tabNumbers') }
         );
         const TabTopicsClasses = classNames(
             'btn btn_tab exam__tab exam__tab_topics',
-            { active: (this.state.tabOpen === 'tabTopics') }
+            { active: (this.props.tabActive === 'tabTopics') }
         );
 
         return (
             <div className="exam">
                 <div className="exam__tabs">
-                    <div className={TabExamClasses} onClick={this.handleTabExam}>Экзамен</div>
-                    <div className={TabNumbersClasses} onClick={this.handleTabNumbers}>Билеты по номерам</div>
-                    <div className={TabTopicsClasses} onClick={this.handleTabTopics}>Билеты по темам</div>
+                    <div className={TabExamClasses} onClick={() => this.props.selectTab('tabExam')}>Экзамен</div>
+                    <div className={TabNumbersClasses} onClick={() => this.props.selectTab('tabNumbers')}>Билеты по номерам</div>
+                    <div className={TabTopicsClasses} onClick={() => this.props.selectTab('tabTopics')}>Билеты по темам</div>
                 </div>
-                <TabContent tabOpen={this.state.tabOpen}/>
+                <TabContent />
             </div>
         );
     }
-
-    handleTabExam = () => this.setState({
-        tabOpen: 'tabExam'
-    });
-    handleTabNumbers = () => this.setState({
-        tabOpen: 'tabNumbers'
-    });
-    handleTabTopics = () => this.setState({
-        tabOpen: 'tabTopics'
-    });
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        tabActive: state.tabActive
+    };
+}
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({selectTab: selectTab}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(App);
