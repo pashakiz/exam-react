@@ -3,11 +3,11 @@ import {myConst} from '../const';
 import Question from './Question';
 import Result from './Result';
 import cards from '../tickets';
+import {connect} from "react-redux";
 
-export default class ContentExam extends React.Component {
+class ContentExam extends React.Component {
 
     state = {
-        examMode: 'ticket',
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
@@ -41,7 +41,6 @@ export default class ContentExam extends React.Component {
 
     render() {
 
-        const {tabOpen} = this.props;
         let body = '';
 
         if (this.state.isQuestion && this.state.ticketNum>0) {
@@ -50,7 +49,7 @@ export default class ContentExam extends React.Component {
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question examMode={this.state.examMode}
+            body = <Question examMode={this.props.tabActive.examMode}
                              chosenTopicNums={this.state.chosenTopicNums}
                              ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
@@ -60,7 +59,7 @@ export default class ContentExam extends React.Component {
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result examMode={this.state.examMode}
+            body = <Result examMode={this.props.tabActive.examMode}
                            checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
@@ -69,7 +68,7 @@ export default class ContentExam extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (tabOpen === 'tabExam' && !this.state.isQuestion && !this.state.isResult) {
+        if (this.props.tabActive.name === 'tabExam' && !this.state.isQuestion && !this.state.isResult ) {
             body = (
                 <div className="exam__random">
                     <p>На экзамен даётся 20 минут.<br/>Внимательно читайте каждый вопрос и все варианты ответов.<br/>Не торопитесь. Удачи!</p>
@@ -81,6 +80,7 @@ export default class ContentExam extends React.Component {
         return(
             <div className="exam__content exam__content_exam active">
                 {body}
+                {this.props.tabActive.name}                 {this.props.tabActive.examMode}
             </div>
         )
     }
@@ -98,3 +98,11 @@ export default class ContentExam extends React.Component {
         });
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        tabActive: state.tabActive
+    };
+}
+
+export default connect(mapStateToProps)(ContentExam);

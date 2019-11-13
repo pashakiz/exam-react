@@ -3,10 +3,10 @@ import Question from './Question';
 import Result from './Result';
 import topicNames from '../topicNames';
 import topics from '../topics';
+import {connect} from "react-redux";
 
-export default class ContentTopics extends React.Component {
+class ContentTopics extends React.Component {
     state = {
-        examMode: 'topic',
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
@@ -47,9 +47,7 @@ export default class ContentTopics extends React.Component {
 
     render() {
 
-        const {tabOpen} = this.props;
         let body = '';
-
         if (this.state.isQuestion && this.state.chosenTopicNums.length) {
 
             let allQuestions = [];
@@ -79,7 +77,7 @@ export default class ContentTopics extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (tabOpen === 'tabTopics' && !this.state.isQuestion && !this.state.isResult) {
+        if (this.props.tabActive.name === 'tabTopics' && !this.state.isQuestion && !this.state.isResult) {
             let topicList1 = [];
             let topicList2 = [];
             let topicList1Length = Math.ceil(topicNames.length / 2);
@@ -140,6 +138,7 @@ export default class ContentTopics extends React.Component {
         return(
             <div className="exam__content exam__content_topics active">
                 {body}
+                {this.props.tabActive.name}                 {this.props.tabActive.examMode}
             </div>
         )
     }
@@ -173,3 +172,11 @@ export default class ContentTopics extends React.Component {
         });
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        tabActive: state.tabActive
+    };
+}
+
+export default connect(mapStateToProps)(ContentTopics);

@@ -4,11 +4,11 @@ import {myConst} from '../const';
 import Question from './Question';
 import Result from './Result';
 import cards from '../tickets';
+import {connect} from "react-redux";
 
-export default class ContentNumbers extends React.Component {
+class ContentNumbers extends React.Component {
 
     state = {
-        examMode: 'ticket',
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
@@ -45,16 +45,14 @@ export default class ContentNumbers extends React.Component {
     };
 
     render() {
-        const {tabOpen} = this.props;
         let body = '';
-
         if (this.state.isQuestion && this.state.ticketNum>0) {
             let allQuestions = cards['c'+this.state.ticketNum];
             let checkedQuestions = [];
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question examMode={this.state.examMode}
+            body = <Question examMode={this.props.examMode}
                              chosenTopicNums={this.state.chosenTopicNums}
                              ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
@@ -64,7 +62,7 @@ export default class ContentNumbers extends React.Component {
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result examMode={this.state.examMode}
+            body = <Result examMode={this.props.examMode}
                            checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
@@ -73,7 +71,7 @@ export default class ContentNumbers extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (tabOpen === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
+        if (this.props.tabActive.name === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
             let buttons = [];
             for (let i=1; i<=20; i++) {
                 let i20 = i+20;
@@ -126,6 +124,7 @@ export default class ContentNumbers extends React.Component {
                     </table>
                     <div className="exam__footer d-flex justify-content-center align-items-center">
                         <button className="btn btn_clear" onClick={this.handleClickClearLocalStorage}>Очистить историю ответов</button>
+                        {this.props.tabActive.name}                         {this.props.tabActive.examMode}
                     </div>
                 </div>
             );
@@ -155,3 +154,11 @@ export default class ContentNumbers extends React.Component {
     }
 
 }
+
+function mapStateToProps(state) {
+    return {
+        tabActive: state.tabActive
+    };
+}
+
+export default connect(mapStateToProps)(ContentNumbers);

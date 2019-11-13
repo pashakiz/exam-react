@@ -1,4 +1,4 @@
-export default function (state=null, action) {
+export default function (state={name: 'tabExam', examMode: 'ticket'}, action) {
     switch (action.type) {
         case 'TAB_SELECTED':
             return action.payload;
