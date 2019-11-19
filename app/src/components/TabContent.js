@@ -1,26 +1,24 @@
 import React from 'react';
 import ContentExam from './ContentExam';
 import ContentNumbers from './ContentNumbers';
-import ContentTopics from './ContentTropics';
-import {bindActionCreators} from "redux";
-import {selectTab} from "../actions/select-tab";
-import {connect} from "react-redux";
+import ContentTopics from './ContentTopics';
+import {connect} from 'react-redux';
 
 class TabContent extends React.Component {
     render() {
 
         let body = '';
-        if (this.props.tabActive.name === 'tabExam') {
+        if (this.props.appActive.tab === 'tabExam') {
             body = (
                 <ContentExam />
             );
         }
-        if (this.props.tabActive.name === 'tabNumbers') {
+        if (this.props.appActive.tab === 'tabNumbers') {
             body = (
                 <ContentNumbers />
             );
         }
-        if (this.props.tabActive.name === 'tabTopics') {
+        if (this.props.appActive.tab === 'tabTopics') {
             body = (
                 <ContentTopics />
             );
@@ -36,12 +34,8 @@ class TabContent extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        tabActive: state.tabActive
+        appActive: state.appActive
     };
 }
 
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({selectTab: selectTab}, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(TabContent);
+export default connect(mapStateToProps)(TabContent);

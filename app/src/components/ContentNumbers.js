@@ -1,10 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import {myConst} from '../const';
 import Question from './Question';
 import Result from './Result';
-import cards from '../tickets';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
 class ContentNumbers extends React.Component {
 
@@ -47,12 +45,12 @@ class ContentNumbers extends React.Component {
     render() {
         let body = '';
         if (this.state.isQuestion && this.state.ticketNum>0) {
-            let allQuestions = cards['c'+this.state.ticketNum];
+            let allQuestions = this.props.cards['c'+this.state.ticketNum];
             let checkedQuestions = [];
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question examMode={this.props.examMode}
+            body = <Question examMode={this.props.appActive.examMode}
                              chosenTopicNums={this.state.chosenTopicNums}
                              ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
@@ -62,7 +60,7 @@ class ContentNumbers extends React.Component {
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result examMode={this.props.examMode}
+            body = <Result examMode={this.props.appActive.examMode}
                            checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
@@ -71,7 +69,7 @@ class ContentNumbers extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (this.props.tabActive.name === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
+        if (this.props.appActive.tab === 'tabNumbers' && !this.state.isQuestion && !this.state.isResult) {
             let buttons = [];
             for (let i=1; i<=20; i++) {
                 let i20 = i+20;
@@ -124,7 +122,6 @@ class ContentNumbers extends React.Component {
                     </table>
                     <div className="exam__footer d-flex justify-content-center align-items-center">
                         <button className="btn btn_clear" onClick={this.handleClickClearLocalStorage}>Очистить историю ответов</button>
-                        {this.props.tabActive.name}                         {this.props.tabActive.examMode}
                     </div>
                 </div>
             );
@@ -138,7 +135,8 @@ class ContentNumbers extends React.Component {
     }
 
     handleClickClearLocalStorage = () => {
-        for (let i = 1; i <= myConst.ALL_TICKETS_NUM; i++) {
+        let allTicketsCount = Object.keys(this.props.cards).length;
+        for (let i = 1; i <= allTicketsCount; i++) {
             window.localStorage.removeItem('ticket'+i);
         }
         this.setState({
@@ -157,7 +155,8 @@ class ContentNumbers extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        tabActive: state.tabActive
+        appActive: state.appActive,
+        cards: state.cards
     };
 }
 

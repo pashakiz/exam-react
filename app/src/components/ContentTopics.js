@@ -1,12 +1,11 @@
 import React from 'react';
 import Question from './Question';
 import Result from './Result';
-import topicNames from '../topicNames';
-import topics from '../topics';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
 class ContentTopics extends React.Component {
     state = {
+        examMode: 'topic',
         isQuestion: false,
         isResult: false,
         ticketNum: 0,
@@ -52,13 +51,13 @@ class ContentTopics extends React.Component {
 
             let allQuestions = [];
             for (let i = 0; i < this.state.chosenTopicNums.length; i++) {
-                allQuestions = allQuestions.concat(topics['t'+this.state.chosenTopicNums[i]]);
+                allQuestions = allQuestions.concat(this.props.topics['t'+this.state.chosenTopicNums[i]]);
             }
             let checkedQuestions = [];
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question examMode={this.state.examMode}
+            body = <Question examMode={this.props.appActive.examMode}
                              chosenTopicNums={this.state.chosenTopicNums}
                              ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
@@ -68,7 +67,7 @@ class ContentTopics extends React.Component {
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result examMode={this.state.examMode}
+            body = <Result examMode={this.props.appActive.examMode}
                            checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
@@ -77,10 +76,10 @@ class ContentTopics extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (this.props.tabActive.name === 'tabTopics' && !this.state.isQuestion && !this.state.isResult) {
+        if (this.props.appActive.tab === 'tabTopics' && !this.state.isQuestion && !this.state.isResult) {
             let topicList1 = [];
             let topicList2 = [];
-            let topicList1Length = Math.ceil(topicNames.length / 2);
+            let topicList1Length = Math.ceil(this.props.topicNames.length / 2);
 
             for (let i = 0; i <= topicList1Length-1; i++ ) {
                 let i1 = i+1;
@@ -90,12 +89,12 @@ class ContentTopics extends React.Component {
                         <input type="checkbox" className="custom-control-input custom-control-input_topicitem"
                                onChange={this.handleClickChooseTopic}
                                id={id} name={id} value={i1} />
-                        <label className="custom-control-label" htmlFor={id}>{i1}. {topicNames[i]}</label>
+                        <label className="custom-control-label" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
                     </div>
                 );
             }
 
-            for (let i = topicList1Length; i <= topicNames.length-1; i++ ) {
+            for (let i = topicList1Length; i <= this.props.topicNames.length-1; i++ ) {
                 let i1 = i+1;
                 let id = 'topic'+i1;
                 topicList2.push(
@@ -103,7 +102,7 @@ class ContentTopics extends React.Component {
                         <input type="checkbox" className="custom-control-input custom-control-input_topicitem"
                                onChange={this.handleClickChooseTopic}
                                id={id} name={id} value={i1} />
-                        <label className="custom-control-label" htmlFor={id}>{i1}. {topicNames[i]}</label>
+                        <label className="custom-control-label" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
                     </div>
                 );
             }
@@ -138,7 +137,6 @@ class ContentTopics extends React.Component {
         return(
             <div className="exam__content exam__content_topics active">
                 {body}
-                {this.props.tabActive.name}                 {this.props.tabActive.examMode}
             </div>
         )
     }
@@ -175,7 +173,9 @@ class ContentTopics extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        tabActive: state.tabActive
+        appActive: state.appActive,
+        topics: state.topics,
+        topicNames: state.topicNames
     };
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {myConst} from '../const';
+import {globalConst} from '../global-const';
 
 export default class Pagination extends React.Component {
     constructor(props) {
@@ -14,7 +14,7 @@ export default class Pagination extends React.Component {
         let paginationHtml = [];
         let checkedQuestions = this.props.checkedQuestions;
         let allCount = this.props.allCount;
-        let maxI = myConst.QUESTIONS_PER_TICKET;
+        let maxI = globalConst.QUESTIONS_PER_TICKET;
         let current = this.props.questionNum+1;
 
         if (allCount > maxI) { //topics

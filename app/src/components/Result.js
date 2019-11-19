@@ -4,7 +4,6 @@ export default class Result extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            examMode: this.props.examMode,
             checkedQuestions: this.props.checkedQuestions,
             checkedTicked: this.props.checkedTicked,
             isSaveToLocalStorage: this.props.isSaveToLocalStorage
@@ -12,7 +11,7 @@ export default class Result extends React.Component {
     }
 
     handleClickBack = () => {
-        if (this.state.isSaveToLocalStorage && this.state.examMode === 'ticket') {
+        if (this.state.isSaveToLocalStorage && this.props.examMode === 'ticket') {
             if(this.allQuestionsCount === 20 && this.correctQuestionsCount >= 18){
                 window.localStorage.setItem('ticket'+this.state.checkedTicked, true);
             } else {
@@ -34,7 +33,7 @@ export default class Result extends React.Component {
         let title1 = '';
         let title2 = '';
 
-        if (this.allQuestionsCount === 20 && this.state.examMode === 'ticket') {
+        if (this.allQuestionsCount === 20 && this.props.examMode === 'ticket') {
             if (this.correctQuestionsCount === 20) {
                 title1 = 'Отлично';
                 title2 = 'Тест сдан!';
@@ -58,7 +57,7 @@ export default class Result extends React.Component {
         }
 
         let timeRow = '';
-        if (this.state.examMode === 'ticket') {
+        if (this.props.examMode === 'ticket') {
             timeRow = <div className="exam-result__label1">{this.props.timerData}</div>;
             if (this.props.timeOut) {
                 timeRow = <div className="exam-result__label1 exam-result__label1_overrun">{this.props.timerData}</div>;

@@ -1,22 +1,17 @@
 import React from 'react';
 import Timer from './Timer';
 import Pagination from './Pagination';
-import questions from '../questions';
+import {connect} from 'react-redux';
 
-export default class Question extends React.Component {
+class Question extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            examMode: this.props.examMode,
             isQuestionTrue: null, //null, true, false
-            ticketNum: this.props.ticketNum,
-            chosenTopicNums: this.props.chosenTopicNums,
-            allQuestions: this.props.allQuestions, //[num][id]
             checkedQuestions: this.props.checkedQuestions, //[num][true/false]
             questionNum: 0, //default first question of ticket
             answerBtnDisabled: true,
-            isHelp: this.props.isHelp,
             isHelpShown: false,
             timerData: null,
             timeOut: false
@@ -29,24 +24,24 @@ export default class Question extends React.Component {
 
     render() {
         const noImage = 'img/noimage.png';
-        const thisQuestionId = this.state.allQuestions[this.state.questionNum];
-        const thisQuestion = questions[thisQuestionId];
+        const thisQuestionId = this.props.allQuestions[this.state.questionNum];
+        const thisQuestion = this.props.questions[thisQuestionId];
         const checkedQuestions = this.state.checkedQuestions;
 
         let helpBtn = '';
         let helpHtml = '';
-        let helpHtmlClasses = 'exam-prompt';
-        let helpHtmlRes = '';
-        if (checkedQuestions[this.state.questionNum] === true) {
-            helpHtmlRes = 'Правильно';
-            helpHtmlClasses = 'exam-prompt correct';
-        }
-        if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {
-            helpHtmlRes = 'Ошибка';
-            helpHtmlClasses = 'exam-prompt wrong';
-        }
-        let helpHtmlRow = checkedQuestions[this.state.questionNum] !== null ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
-        if (this.state.isHelp && thisQuestion.help) {
+        if (this.props.isHelp && thisQuestion.help) {
+            let helpHtmlClasses = 'exam-prompt';
+            let helpHtmlRes = '';
+            if (checkedQuestions[this.state.questionNum] === true) {
+                helpHtmlRes = 'Правильно';
+                helpHtmlClasses = 'exam-prompt correct';
+            }
+            if (checkedQuestions[this.state.questionNum] !== true && checkedQuestions[this.state.questionNum] !== null) {
+                helpHtmlRes = 'Ошибка';
+                helpHtmlClasses = 'exam-prompt wrong';
+            }
+            let helpHtmlRow = checkedQuestions[this.state.questionNum] !== null ? <div className="exam-prompt__res">{helpHtmlRes}</div> : '';
             helpBtn = (
                 <button className="exam-prompt-btn" onClick={this.handleClickHelp}>Подсказка</button>
             );
@@ -134,12 +129,12 @@ export default class Question extends React.Component {
 
         let questionTitle = '';
         let timerHtml = '';
-        if (this.state.examMode === 'ticket') {
+        if (this.props.examMode === 'ticket') {
 
             questionTitle = (
                 <div className="exam-question__title d-flex justify-content-between align-items-start">
                     <div className="exam-question__titletxt">
-                        <div className="exam-question__ticket-num">Билет №{this.state.ticketNum}</div>
+                        <div className="exam-question__ticket-num">Билет №{this.props.ticketNum}</div>
                         <div className="exam-question__question-num">Вопрос {this.state.questionNum+1}</div>
                     </div>
                     <div className="exam__timer-mob">
@@ -156,7 +151,7 @@ export default class Question extends React.Component {
                 </div>
             );
 
-        } else if (this.state.examMode === 'topic') {
+        } else if (this.props.examMode === 'topic') {
             questionTitle = '';
             timerHtml = '';
         }
@@ -170,7 +165,7 @@ export default class Question extends React.Component {
             <div className="exam-question">
                 <div className="exam-question__header d-flex justify-content-between align-items-start">
                     <Pagination questionNum={this.state.questionNum}
-                                allCount={this.state.allQuestions.length}
+                                allCount={this.props.allQuestions.length}
                                 checkedQuestions={this.state.checkedQuestions}
                                 handleClickOpenQuestion={this.handleClickOpenQuestion}/>
                     {timerHtml}
@@ -203,7 +198,7 @@ export default class Question extends React.Component {
     }
 
     handleClickOpenQuestion = (num) => {
-        if(num <= this.state.allQuestions.length-1) {
+        if(num <= this.props.allQuestions.length-1) {
             this.setState({
                 questionNum: num,
                 isHelpShown: false
@@ -263,11 +258,19 @@ export default class Question extends React.Component {
 
         if (count === this.state.checkedQuestions.length) {
             //ticked end
-            if (this.state.examMode === 'ticket') {
-                this.props.getQuestionData(this.state.ticketNum, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
-            } else if (this.state.examMode === 'topic') {
-                this.props.getQuestionData(this.state.chosenTopicNums, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
+            if (this.props.examMode === 'ticket') {
+                this.props.getQuestionData(this.props.ticketNum, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
+            } else if (this.props.examMode === 'topic') {
+                this.props.getQuestionData(this.props.chosenTopicNums, this.state.checkedQuestions, this.state.timerData, this.state.timeOut);
             }
         }
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        questions: state.questions
+    };
+}
+
+export default connect(mapStateToProps)(Question);

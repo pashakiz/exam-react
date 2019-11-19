@@ -5,9 +5,10 @@ import {createStore} from 'redux';
 import allRedusers from './reducers';
 import './index.css';
 import App from './components/App';
+import {globalConst} from './global-const';
 //import * as serviceWorker from './serviceWorker';
 
-const store = createStore(allRedusers);
+const store = createStore(allRedusers, { appActive: {tab: globalConst.START_ACTIVE_TAB, examMode: globalConst.START_ACTIVE_EXAMODE} });
 
 ReactDOM.render(
     <Provider store={store}>

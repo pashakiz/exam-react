@@ -1,9 +1,7 @@
 import React from 'react';
-import {myConst} from '../const';
 import Question from './Question';
 import Result from './Result';
-import cards from '../tickets';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
 class ContentExam extends React.Component {
 
@@ -40,16 +38,14 @@ class ContentExam extends React.Component {
     };
 
     render() {
-
         let body = '';
-
         if (this.state.isQuestion && this.state.ticketNum>0) {
-            let allQuestions = cards['c'+this.state.ticketNum];
+            let allQuestions = this.props.cards['c'+this.state.ticketNum];
             let checkedQuestions = [];
             for (let i = 0; i < allQuestions.length; i++) {
                 checkedQuestions.push(null);
             }
-            body = <Question examMode={this.props.tabActive.examMode}
+            body = <Question examMode={this.props.appActive.examMode}
                              chosenTopicNums={this.state.chosenTopicNums}
                              ticketNum={this.state.ticketNum}
                              allQuestions={allQuestions}
@@ -59,7 +55,7 @@ class ContentExam extends React.Component {
         }
 
         if (this.state.isResult && this.state.checkedQuestions.length) {
-            body = <Result examMode={this.props.tabActive.examMode}
+            body = <Result examMode={this.props.appActive.examMode}
                            checkedQuestions={this.state.checkedQuestions}
                            checkedTicked={this.state.checkedTicked}
                            handleRestart={this.handleRestart.bind(this)}
@@ -68,7 +64,7 @@ class ContentExam extends React.Component {
                            isSaveToLocalStorage={this.state.isSaveToLocalStorage}/>;
         }
 
-        if (this.props.tabActive.name === 'tabExam' && !this.state.isQuestion && !this.state.isResult ) {
+        if (this.props.appActive.tab === 'tabExam' && !this.state.isQuestion && !this.state.isResult ) {
             body = (
                 <div className="exam__random">
                     <p>На экзамен даётся 20 минут.<br/>Внимательно читайте каждый вопрос и все варианты ответов.<br/>Не торопитесь. Удачи!</p>
@@ -80,7 +76,6 @@ class ContentExam extends React.Component {
         return(
             <div className="exam__content exam__content_exam active">
                 {body}
-                {this.props.tabActive.name}                 {this.props.tabActive.examMode}
             </div>
         )
     }
@@ -91,7 +86,8 @@ class ContentExam extends React.Component {
     }
 
     handleClick = () => {
-        let num = this.randomInteger(1, myConst.ALL_TICKETS_NUM);
+        let allTicketsCount = Object.keys(this.props.cards).length;
+        let num = this.randomInteger(1, allTicketsCount);
         this.setState({
             isQuestion: true,
             ticketNum: num
@@ -101,7 +97,8 @@ class ContentExam extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        tabActive: state.tabActive
+        appActive: state.appActive,
+        cards: state.cards
     };
 }
 
