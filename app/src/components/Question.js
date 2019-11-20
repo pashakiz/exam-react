@@ -10,6 +10,7 @@ class Question extends React.Component {
         this.state = {
             isQuestionTrue: null, //null, true, false
             checkedQuestions: this.props.checkedQuestions, //[num][true/false]
+            checkedAnswer: null,
             questionNum: 0, //default first question of ticket
             answerBtnDisabled: true,
             isHelpShown: false,
@@ -66,8 +67,12 @@ class Question extends React.Component {
                 //unanswered
                 answersHtml.push(
                     <div className="custom-control custom-radio" key={answerId}>
-                        <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i}/>
-                        <label className="custom-control-label" htmlFor={answerId} onClick={this.handleClickLabelAnswer}>{thisQuestion.answer[i]}</label>
+                        <input type="radio" id={answerId}
+                               className="custom-control-input"
+                               name={answerName} value={i}
+                               checked={this.state.checkedAnswer === i}
+                               onChange={(e) => this.handleClickLabelAnswer(e)}/>
+                        <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                     </div>
                 );
             } else {
@@ -78,7 +83,9 @@ class Question extends React.Component {
                         //highlight correct answer
                         answersHtml.push(
                             <div className="custom-control custom-radio correct" key={answerId}>
-                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled" checked="checked"/>
+                                <input type="radio" id={answerId} className="custom-control-input"
+                                       name={answerName} value={i} disabled="disabled"
+                                       checked={this.state.checkedAnswer === null ? true : (this.state.checkedAnswer === i)}/>
                                 <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                             </div>
                         );
@@ -86,7 +93,9 @@ class Question extends React.Component {
                         //other answers not highlighted
                         answersHtml.push(
                             <div className="custom-control custom-radio" key={answerId}>
-                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <input type="radio" id={answerId} className="custom-control-input"
+                                       name={answerName} value={i} disabled="disabled"
+                                       checked={this.state.checkedAnswer === null ? false : (this.state.checkedAnswer === i)}/>
                                 <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                             </div>
                         );
@@ -97,7 +106,9 @@ class Question extends React.Component {
                         //highlight wrong answer
                         answersHtml.push(
                             <div className="custom-control custom-radio wrong" key={answerId}>
-                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled" checked="checked"/>
+                                <input type="radio" id={answerId} className="custom-control-input"
+                                       name={answerName} value={i} disabled="disabled"
+                                       checked={this.state.checkedAnswer === null ? true : (this.state.checkedAnswer === i)}/>
                                 <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                             </div>
                         );
@@ -105,7 +116,9 @@ class Question extends React.Component {
                         //highlight correct answer
                         answersHtml.push(
                             <div className="custom-control custom-radio correct" key={answerId}>
-                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <input type="radio" id={answerId} className="custom-control-input"
+                                       name={answerName} value={i} disabled="disabled"
+                                       checked={this.state.checkedAnswer === null ? false : (this.state.checkedAnswer === i)}/>
                                 <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                             </div>
                         );
@@ -113,7 +126,10 @@ class Question extends React.Component {
                         //other answers not highlighted
                         answersHtml.push(
                             <div className="custom-control custom-radio" key={answerId}>
-                                <input type="radio" id={answerId} className="custom-control-input" name={answerName} value={i} disabled="disabled"/>
+                                <input type="radio" id={answerId}
+                                       className="custom-control-input"
+                                       name={answerName} value={i} disabled="disabled"
+                                       checked={this.state.checkedAnswer === null ? false : (this.state.checkedAnswer === i)}/>
                                 <label className="custom-control-label" htmlFor={answerId}>{thisQuestion.answer[i]}</label>
                             </div>
                         );
@@ -184,10 +200,10 @@ class Question extends React.Component {
                     <div className="d-sm-flex justify-content-between align-items-start">
                         <div className="exam-question__btns">
                             <button className="btn btn2 exam-question__btn exam-question__btn-submit"
-                                    onClick={this.handleClickAnswerCheck.bind(this, thisQuestionId, thisQuestion.answerTrue)}
+                                    onClick={() => this.handleClickAnswerCheck(thisQuestionId, thisQuestion.answerTrue)}
                                     disabled={this.state.answerBtnDisabled}>Ответить</button>
                             <button className="btn btn3 exam-question__btn exam-question__btn-next"
-                                    onClick={this.handleClickOpenQuestion.bind(this, this.state.questionNum+1)}>{btnNext}</button>
+                                    onClick={() => this.handleClickOpenQuestion(this.state.questionNum+1)}>{btnNext}</button>
                         </div>
                         {helpBtn}
                     </div>
@@ -201,13 +217,15 @@ class Question extends React.Component {
         if(num <= this.props.allQuestions.length-1) {
             this.setState({
                 questionNum: num,
-                isHelpShown: false
+                isHelpShown: false,
+                checkedAnswer: null
             });
         }
     };
 
-    handleClickLabelAnswer = () => this.setState({
-        answerBtnDisabled: false
+    handleClickLabelAnswer = (changeEvent) => this.setState({
+        answerBtnDisabled: false,
+        checkedAnswer: +changeEvent.target.value
     });
 
     handleClickHelp = () => this.setState({
@@ -215,26 +233,16 @@ class Question extends React.Component {
     });
 
     handleClickAnswerCheck = (thisQuestionId, answerTrue) => {
-        let questionNum = this.state.questionNum;
-        let answer = document.getElementsByName('q'+thisQuestionId);
-        let chosenAnswer = null;
         let isAnswerTrue = null;
         let checkedQuestions = this.state.checkedQuestions;
 
-        for (let i = 0; i < answer.length; i++) {
-            if (answer[i].checked) {
-                chosenAnswer = +answer[i].value;
-                break;
-            }
-        }
-
-        if(chosenAnswer === answerTrue) {
+        if(this.state.checkedAnswer === answerTrue) {
             isAnswerTrue = true;
         } else {
-            isAnswerTrue = chosenAnswer;
+            isAnswerTrue = this.state.checkedAnswer;
         }
 
-        checkedQuestions[questionNum] = isAnswerTrue;
+        checkedQuestions[this.state.questionNum] = isAnswerTrue;
 
         this.setState({
             checkedQuestions: checkedQuestions,
@@ -242,7 +250,7 @@ class Question extends React.Component {
         });
 
         if (isAnswerTrue === true) {
-            this.handleClickOpenQuestion(questionNum+1);
+            this.handleClickOpenQuestion(this.state.questionNum+1);
         }
 
         this.checkTicketFinished();
