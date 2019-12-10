@@ -24,7 +24,7 @@
   </head>
   <body class="sticky__body">
     <header class="header test">
-      <nav class="conteiner navigation">
+      <nav id="navigation" class="conteiner navigation">
         <ul>
           <li><a href="#" class="icon-left-open">На главную</a></li>
           <li><a href="#">Цены</a></li>
@@ -32,7 +32,18 @@
           <li><a href="#" id="isExam" class="selected">Экзамен</a></li>
         </ul>
       </nav>
+      <button id="navtoggle" class="btn navtoggle" type="button">
+        <span class="navtoggle__iconbar"></span>
+        <span class="navtoggle__iconbar"></span>
+        <span class="navtoggle__iconbar"></span>
+      </button>
     </header>
+
+    <script>
+      navtoggle.onclick = function(e) {
+        navigation.classList.toggle('expand');
+      }
+    </script>
 
     <div class="container-fluid">
       <h3 style="text-align: center; margin-top: 20px;">
