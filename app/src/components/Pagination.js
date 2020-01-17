@@ -113,7 +113,9 @@ export default class Pagination extends React.Component {
                 }
             }
         } else { //tickets
-            for (let i = 1; i <= maxI; i++) {
+            let steps = 0;
+            allCount < maxI ? steps = allCount : steps = maxI;
+            for (let i = 1; i <= steps; i++) {
                 paginationHtml.push(
                     <button className={classNames('btn btn__pagination',
                             { active: (i === current) },
