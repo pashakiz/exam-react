@@ -79,7 +79,7 @@ class ContentTopics extends React.Component {
         if (this.props.appActive.tab === 'tabTopics' && !this.state.isQuestion && !this.state.isResult) {
             let topicList1 = [];
             let topicList2 = [];
-            let topicList1Length = Math.ceil(this.props.topicNames.length / 2);
+            let topicList1Length = Math.ceil(this.props.topicNames.length / 2) + 1;
 
             for (let i = 0; i <= topicList1Length-1; i++ ) {
                 let i1 = i+1;
@@ -89,7 +89,7 @@ class ContentTopics extends React.Component {
                         <input type="checkbox" className="custom-control-input custom-control-input_topicitem"
                                onChange={this.handleClickChooseTopic}
                                id={id} name={id} value={i1} />
-                        <label className="custom-control-label" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
+                        <label className="custom-control-label pre-line" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
                     </div>
                 );
             }
@@ -102,7 +102,7 @@ class ContentTopics extends React.Component {
                         <input type="checkbox" className="custom-control-input custom-control-input_topicitem"
                                onChange={this.handleClickChooseTopic}
                                id={id} name={id} value={i1} />
-                        <label className="custom-control-label" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
+                        <label className="custom-control-label pre-line" htmlFor={id}>{i1}. {this.props.topicNames[i]}</label>
                     </div>
                 );
             }
