@@ -2558,7 +2558,7 @@ export default function () {
                 "Да.",
                 "Нет."
             ],
-            answerTrue: 0,
+            answerTrue: 1,
             help: ""
         },
         {
@@ -3430,7 +3430,7 @@ export default function () {
                 "Должны уступить дорогу обоим транспортным средствам.",
                 "Имеете преимущественное право на движение."
             ],
-            answerTrue: 2,
+            answerTrue: 1,
             help: ""
         },
         {
@@ -11356,7 +11356,7 @@ export default function () {
                 "Грузовой автомобиль.",
                 "Вы."
             ],
-            answerTrue: 0,
+            answerTrue: 1,
             help: ""
         },
         {
@@ -12232,7 +12232,7 @@ export default function () {
                 "Вторым.",
                 "Первым."
             ],
-            answerTrue: 2,
+            answerTrue: 0,
             help: ""
         },
         {
