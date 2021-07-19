@@ -1,5 +1,5 @@
 # Traffic rules exam
-See in browser: http://avtoclub.dn.ua/exam (or http://lubus.ru/d/avtoclub)
+See in browser: http://avtoclub.dn.ua/exam (or http://pashakiz.github.io/d/avtoclub)
 
 Based on [create-react-app](https://github.com/facebook/create-react-app)
 
